@@ -15,18 +15,39 @@ require_once __DIR__ . '/includes/header.php';
 
 <!-- Hero Banner Section -->
 <section class="position-relative bg-light flex-column justify-content-between overflow-hidden d-flex" style="min-h: 90vh;">
-    <!-- Image Background -->
-    <div class="position-absolute top-0 start-0 w-100 h-100 z-0">
-        <?php if (file_exists(__DIR__ . '/public/images/hero_model.jpg')): ?>
-            <img src="public/images/hero_model.jpg" class="w-100 h-100 object-fit-cover opacity-90" style="object-fit: cover;" alt="Artisanal Collection Hero">
-        <?php else: ?>
-            <div class="w-100 h-100 d-flex flex-column align-items-center justify-content-center bg-light text-muted p-5 img-placeholder opacity-50">
-                <svg class="mb-2 stroke-1" style="width: 48px; height: 48px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375 0 11-.75 0 .375 0 01.75 0z" />
-                </svg>
-                <span class="small font-bold text-uppercase tracking-widest text-center">Place Hero Image Here<br><code>public/images/hero_model.jpg</code></span>
-            </div>
-        <?php endif; ?>
+    <!-- Image Background Slider -->
+    <?php
+    $heroImages = [
+        'public/images/amazed-young-woman-shopaholic-holding-colorful-shopping-bags-look-amused-shop-buying-thi_1258-119761.avif',
+        'public/images/depositphotos_409624328-stock-photo-young-woman-pink-hair-holding.jpg',
+        'public/images/funky-cool-asian-senior-woman-fashionable-clothes-dancing-while-going-shopping-sales-holdi_1258-162040.avif',
+        'public/images/image-happy-young-woman-carry-lots-shopping-bags-buying-things-spring-discounts-standing-blue-background_1258-300694.avif',
+        'public/images/images.jpg'
+    ];
+    // Filter to only those that exist
+    $heroImages = array_filter($heroImages, function($img) {
+        return file_exists(__DIR__ . '/' . $img);
+    });
+    // Fallback if none exist
+    if (empty($heroImages)) {
+        $heroImages = ['public/images/hero_model.jpg'];
+    }
+    ?>
+    <div class="position-absolute top-0 start-0 w-100 h-100 z-0"
+         x-data="{ activeIndex: 0, slides: <?= htmlspecialchars(json_encode(array_values($heroImages))) ?> }"
+         x-init="setInterval(() => activeIndex = (activeIndex + 1) % slides.length, 5000)">
+        
+        <template x-for="(slide, index) in slides" :key="index">
+            <img 
+                :src="slide" 
+                class="position-absolute top-0 start-0 w-100 h-100 opacity-90 transition-all duration-1000" 
+                style="object-fit: cover; transition: opacity 1s ease-in-out;" 
+                :style="activeIndex === index ? 'opacity: 1; z-index: 1;' : 'opacity: 0; z-index: 0;'"
+                alt="Artisanal Collection Hero">
+        </template>
+
+        <!-- Fallback for no JS or while loading -->
+        <img src="<?= $heroImages[0] ?>" class="position-absolute top-0 start-0 w-100 h-100 opacity-90" style="object-fit: cover; z-index: -1;" alt="Artisanal Collection Hero">
     </div>
 
     <!-- Centered Header Titles -->
