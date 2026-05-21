@@ -195,7 +195,7 @@ try {
 
     // Redirect based on role
     if ($userRole === 'admin') {
-        header('Location: admin/dashboard.php');
+        header('Location: admin/index.php');
     } else {
         header('Location: index.php');
     }
