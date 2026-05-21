@@ -1,12 +1,17 @@
 # Caddyfile for Railway deployment
-# Disable automatic HTTPS as Railway provides its own TLS termination
 {
-    auto_https off
+    # Disables the admin interface to prevent port conflicts on Railway
+    admin off
+    # Integrates FrankenPHP directly into Caddy
+    frankenphp
 }
 
-# Serve the PHP application using FrankenPHP
 :{$PORT} {
+    # Points exactly to where Railway places your files
     root * /app
-    php_fastcgi unix//run/frankenphp.sock
-    file_server
+
+    # Standard FrankenPHP routing for public PHP files
+    route {
+        php_server
+    }
 }
