@@ -130,20 +130,35 @@ try {
             name        TEXT NOT NULL,
             email       TEXT NOT NULL UNIQUE,
             google_id   TEXT NOT NULL,
+            role        TEXT NOT NULL DEFAULT "user",
             created_at  DATETIME DEFAULT CURRENT_TIMESTAMP
         );'
     );
+    // Attempt to add role column for older tables (ignore error if already exists)
+    try {
+        $pdo->exec('ALTER TABLE users ADD COLUMN role TEXT NOT NULL DEFAULT "user"');
+    } catch (Throwable $e) {
+        // column likely already exists; safe to ignore
+    }
 
-    // Look for an existing user with the same email.
-    $stmt = $pdo->prepare('SELECT id FROM users WHERE email = :email LIMIT 1');
+    // Ensure last_login column exists (ignore if already present)
+    try {
+        $pdo->exec('ALTER TABLE users ADD COLUMN last_login DATETIME');
+    } catch (Throwable $e) {
+        // column likely exists
+    }
+
+    // Look for an existing user with the same email and retrieve role.
+    $stmt = $pdo->prepare('SELECT id, role FROM users WHERE email = :email LIMIT 1');
     $stmt->execute([':email' => $user['email']]);
     $existing = $stmt->fetch();
 
     if ($existing) {
         // Existing user – log them in.
         $userId = (int)$existing['id'];
+        $userRole = $existing['role'];
     } else {
-        // New user – insert a row.
+        // New user – insert a row with default role.
         $insert = $pdo->prepare(
             'INSERT INTO users (name, email, google_id) VALUES (:name, :email, :gid)'
         );
@@ -153,20 +168,29 @@ try {
             ':gid'   => $user['id'],
         ]);
         $userId = (int)$pdo->lastInsertId();
+        $userRole = 'user';
     }
 
     /* -----------------------------------------------------------------
      * 6️⃣  Session handling – store login state
      * ----------------------------------------------------------------- */
+    // Store login state and role
     $_SESSION['user_logged_in'] = true;
     $_SESSION['user_id']         = $userId;
     $_SESSION['user_name']       = $user['name'] ?? '';
     $_SESSION['user_email']      = $user['email'];
+    $_SESSION['user_role']       = $userRole;
 
-    /* -----------------------------------------------------------------
-     * 7️⃣  Final redirect
-     * ----------------------------------------------------------------- */
-    header('Location: index.php');
+    // Update last_login timestamp for this user
+    $updateLogin = $pdo->prepare('UPDATE users SET last_login = CURRENT_TIMESTAMP WHERE id = :id');
+    $updateLogin->execute([':id' => $userId]);
+
+    // Redirect based on role
+    if ($userRole === 'admin') {
+        header('Location: admin/dashboard.php');
+    } else {
+        header('Location: index.php');
+    }
     exit;
 } catch (Throwable $e) {
     // Log the precise error to Railway’s logs (stderr) for debugging.

@@ -276,6 +276,18 @@ class JsonDB {
         }
         return null;
     }
+
+    public static function updateUser($id, $data) {
+        $users = self::getUsers();
+        foreach ($users as &$user) {
+            if ($user['id'] == $id) {
+                $user = array_merge($user, $data);
+                self::write(self::$usersFile, $users);
+                return $user;
+            }
+        }
+        return null;
+    }
 }
 
 // Auto-run initialization

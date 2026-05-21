@@ -68,6 +68,7 @@ class Auth {
     // Get current user info
     public static function getCurrentUser() {
         if (!self::isLoggedIn()) return null;
+        // Return user data without any side effects or output
         return [
             'id' => $_SESSION['user_id'],
             'name' => $_SESSION['user_name'],
@@ -102,4 +103,4 @@ class Auth {
         }
     }
 }
-?>
+
