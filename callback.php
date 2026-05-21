@@ -1,153 +1,185 @@
 <?php
+declare(strict_types=1);
+
 /**
- * callback.php – Google OAuth 2.0 response handler
+ * callback.php – Google OAuth 2.0 response handler (SQLite version)
  *
- * 1. Validates the "state" token stored in the session (CSRF protection).
- * 2. Exchanges the authorization code for an access token via a POST request
- *    to https://oauth2.googleapis.com/token using raw cURL.
- * 3. Retrieves the verified user profile (email, name, id) from Google.
- * 4. Looks up the e‑mail in a PDO‑based MySQL database. If the user does not
- *    exist, a new row is inserted. The user id is stored in the session.
- * 5. Finally redirects the user to index.php.
+ *  • Validates the CSRF state token stored in the session.
+ *  • Exchanges the authorization code for an access token (cURL).
+ *  • Retrieves the verified Google profile (email, name, id).
+ *  • Uses a PDO‑SQLite connection to look‑up / insert the user.
+ *  • Stores login data in the session and redirects to index.php.
  *
- * No external Composer packages are required – everything uses native PHP.
+ * All code is inside a single try/catch.  Any exception is logged
+ * (Railway will capture it) and a user‑friendly message is shown.
  */
 
 session_start();
 
-// ---------------------------------------------------------------------
-// 1️⃣  Configuration – environment variables and redirect URI
-// ---------------------------------------------------------------------
-$clientId     = getenv('GOOGLE_CLIENT_ID');
-$clientSecret = getenv('GOOGLE_CLIENT_SECRET');
-$redirectUri  = 'https://saqib-project-production.up.railway.app/callback.php';
-
-// ---------------------------------------------------------------------
-// 2️⃣  Basic validation – we must have a code and a matching state token
-// ---------------------------------------------------------------------
-if (isset($_GET['error'])) {
-    // User denied consent or another OAuth error occurred
-    die('Google OAuth error: ' . htmlspecialchars($_GET['error']) .
-        (isset($_GET['error_description']) ? ' – ' . htmlspecialchars($_GET['error_description']) : ''));
-}
-
-if (!isset($_GET['code'])) {
-    die('Error: No authorization code received.');
-}
-if (!isset($_GET['state']) || $_GET['state'] !== ($_SESSION['oauth2state'] ?? '')) {
-    die('Error: Invalid state parameter – possible CSRF attack.');
-}
-$authCode = $_GET['code'];
-
-// ---------------------------------------------------------------------
-// 3️⃣  Exchange the code for an access token (cURL POST request)
-// ---------------------------------------------------------------------
-$tokenUrl = 'https://oauth2.googleapis.com/token';
-$postFields = http_build_query([
-    'code'          => $authCode,
-    'client_id'     => $clientId,
-    'client_secret' => $clientSecret,
-    'redirect_uri'  => $redirectUri,
-    'grant_type'    => 'authorization_code',
-]);
-
-$ch = curl_init($tokenUrl);
-curl_setopt_array($ch, [
-    CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_POST           => true,
-    CURLOPT_POSTFIELDS     => $postFields,
-    CURLOPT_HTTPHEADER     => ['Content-Type: application/x-www-form-urlencoded'],
-    CURLOPT_SSL_VERIFYPEER => true,
-]);
-
-$tokenResponse = curl_exec($ch);
-if (curl_errno($ch)) {
-    die('cURL error while obtaining access token: ' . curl_error($ch));
-}
-curl_close($ch);
-
-$tokenData = json_decode($tokenResponse, true);
-if (empty($tokenData['access_token'])) {
-    die('Failed to obtain access token. Response: ' . htmlspecialchars($tokenResponse));
-}
-$accessToken = $tokenData['access_token'];
-
-// ---------------------------------------------------------------------
-// 4️⃣  Fetch the user's profile (email, name, id) from Google
-// ---------------------------------------------------------------------
-$userInfoUrl = 'https://www.googleapis.com/oauth2/v2/userinfo';
-$ch = curl_init($userInfoUrl);
-curl_setopt_array($ch, [
-    CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_HTTPHEADER     => [
-        'Authorization: Bearer ' . $accessToken,
-        'Accept: application/json',
-    ],
-    CURLOPT_SSL_VERIFYPEER => true,
-]);
-
-$userResponse = curl_exec($ch);
-if (curl_errno($ch)) {
-    die('cURL error while fetching user info: ' . curl_error($ch));
-}
-curl_close($ch);
-
-$user = json_decode($userResponse, true);
-if (empty($user['email']) || empty($user['id'])) {
-    die('Invalid user data returned from Google.');
-}
-
-// ---------------------------------------------------------------------
-// 5️⃣  Database – PDO connection + upsert logic (try/catch for safety)
-// ---------------------------------------------------------------------
-// Adjust these DSN/credentials to match your environment.
-$dsn      = 'mysql:host=YOUR_HOST;dbname=YOUR_DB;charset=utf8mb4';
-$dbUser   = 'YOUR_DB_USER';
-$dbPass   = 'YOUR_DB_PASSWORD';
-
 try {
-    $pdo = new PDO($dsn, $dbUser, $dbPass, [
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+    /* -----------------------------------------------------------------
+     * 1️⃣  Configuration – env vars + redirect URI
+     * ----------------------------------------------------------------- */
+    $clientId     = getenv('GOOGLE_CLIENT_ID');
+    $clientSecret = getenv('GOOGLE_CLIENT_SECRET');
+    $redirectUri  = 'https://saqib-project-production.up.railway.app/callback.php';
+
+    if ($clientId === false || $clientSecret === false) {
+        throw new RuntimeException('Google client credentials are not set in the environment.');
+    }
+
+    /* -----------------------------------------------------------------
+     * 2️⃣  Basic validation – code & state
+     * ----------------------------------------------------------------- */
+    if (isset($_GET['error'])) {
+        // User denied consent or another OAuth error occurred
+        throw new RuntimeException(
+            'Google OAuth error: ' . htmlspecialchars($_GET['error']) .
+            (isset($_GET['error_description']) ? ' – ' . htmlspecialchars($_GET['error_description']) : '')
+        );
+    }
+
+    if (!isset($_GET['code'])) {
+        throw new RuntimeException('No authorization code received from Google.');
+    }
+
+    if (!isset($_GET['state']) || $_GET['state'] !== ($_SESSION['oauth2state'] ?? '')) {
+        throw new RuntimeException('Invalid state parameter – possible CSRF attack.');
+    }
+
+    $authCode = $_GET['code'];
+
+    /* -----------------------------------------------------------------
+     * 3️⃣  Exchange the code for an access token (cURL POST)
+     * ----------------------------------------------------------------- */
+    $tokenUrl = 'https://oauth2.googleapis.com/token';
+    $postFields = http_build_query([
+        'code'          => $authCode,
+        'client_id'     => $clientId,
+        'client_secret' => $clientSecret,
+        'redirect_uri'  => $redirectUri,
+        'grant_type'    => 'authorization_code',
+    ]);
+
+    $ch = curl_init($tokenUrl);
+    curl_setopt_array($ch, [
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_POST           => true,
+        CURLOPT_POSTFIELDS     => $postFields,
+        CURLOPT_HTTPHEADER     => ['Content-Type: application/x-www-form-urlencoded'],
+        CURLOPT_SSL_VERIFYPEER => true,
+    ]);
+
+    $tokenResponse = curl_exec($ch);
+    if ($tokenResponse === false) {
+        throw new RuntimeException('cURL error while fetching access token: ' . curl_error($ch));
+    }
+    curl_close($ch);
+
+    $tokenData = json_decode($tokenResponse, true);
+    if (empty($tokenData['access_token'])) {
+        throw new RuntimeException('Failed to obtain access token. Response: ' . $tokenResponse);
+    }
+    $accessToken = $tokenData['access_token'];
+
+    /* -----------------------------------------------------------------
+     * 4️⃣  Fetch verified user profile from Google
+     * ----------------------------------------------------------------- */
+    $userInfoUrl = 'https://www.googleapis.com/oauth2/v2/userinfo';
+    $ch = curl_init($userInfoUrl);
+    curl_setopt_array($ch, [
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_HTTPHEADER     => [
+            'Authorization: Bearer ' . $accessToken,
+            'Accept: application/json',
+        ],
+        CURLOPT_SSL_VERIFYPEER => true,
+    ]);
+
+    $userResponse = curl_exec($ch);
+    if ($userResponse === false) {
+        throw new RuntimeException('cURL error while fetching user info: ' . curl_error($ch));
+    }
+    curl_close($ch);
+
+    $user = json_decode($userResponse, true);
+    if (empty($user['email']) || empty($user['id'])) {
+        throw new RuntimeException('Invalid user data returned from Google.');
+    }
+
+    /* -----------------------------------------------------------------
+     * 5️⃣  SQLite PDO connection + up‑sert logic
+     * ----------------------------------------------------------------- */
+    // Path to your SQLite file – adjust if you keep it elsewhere.
+    $sqlitePath = __DIR__ . '/database.sqlite';
+
+    // Ensure the file exists so PDO can open it (Railway allows write in repo root).
+    if (!file_exists($sqlitePath)) {
+        touch($sqlitePath);
+    }
+
+    $pdo = new PDO('sqlite:' . $sqlitePath, null, null, [
+        PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
     ]);
 
-    // Look for an existing user with the same email
-    $stmt = $pdo->prepare('SELECT id FROM users WHERE email = :email LIMIT 1');
-    $stmt->execute(['email' => $user['email']]);
-    $row = $stmt->fetch();
+    // Create the `users` table if this is the first run.
+    $pdo->exec(
+        'CREATE TABLE IF NOT EXISTS users (
+            id          INTEGER PRIMARY KEY AUTOINCREMENT,
+            name        TEXT NOT NULL,
+            email       TEXT NOT NULL UNIQUE,
+            google_id   TEXT NOT NULL,
+            created_at  DATETIME DEFAULT CURRENT_TIMESTAMP
+        );'
+    );
 
-    if ($row) {
-        // Existing user – log them in
-        $userId = $row['id'];
+    // Look for an existing user with the same email.
+    $stmt = $pdo->prepare('SELECT id FROM users WHERE email = :email LIMIT 1');
+    $stmt->execute([':email' => $user['email']]);
+    $existing = $stmt->fetch();
+
+    if ($existing) {
+        // Existing user – log them in.
+        $userId = (int)$existing['id'];
     } else {
-        // New user – insert a row and obtain the new id
+        // New user – insert a row.
         $insert = $pdo->prepare(
-            'INSERT INTO users (name,email,google_id,created_at) VALUES (:name,:email,:gid,NOW())'
+            'INSERT INTO users (name, email, google_id) VALUES (:name, :email, :gid)'
         );
         $insert->execute([
-            'name'  => $user['name'] ?? $user['given_name'] ?? '',
-            'email' => $user['email'],
-            'gid'   => $user['id'],
+            ':name'  => $user['name'] ?? $user['given_name'] ?? '',
+            ':email' => $user['email'],
+            ':gid'   => $user['id'],
         ]);
-        $userId = $pdo->lastInsertId();
+        $userId = (int)$pdo->lastInsertId();
     }
-} catch (PDOException $e) {
-    // Log the error (you may want to write to a file) and display a friendly message
-    error_log('Database error during Google login: ' . $e->getMessage());
-    die('A server error occurred while processing your login. Please try again later.');
+
+    /* -----------------------------------------------------------------
+     * 6️⃣  Session handling – store login state
+     * ----------------------------------------------------------------- */
+    $_SESSION['user_logged_in'] = true;
+    $_SESSION['user_id']         = $userId;
+    $_SESSION['user_name']       = $user['name'] ?? '';
+    $_SESSION['user_email']      = $user['email'];
+
+    /* -----------------------------------------------------------------
+     * 7️⃣  Final redirect
+     * ----------------------------------------------------------------- */
+    header('Location: index.php');
+    exit;
+} catch (Throwable $e) {
+    // Log the precise error to Railway’s logs (stderr) for debugging.
+    error_log('Google OAuth callback error: ' . $e->getMessage());
+
+    // Show a simple, user‑friendly message – no stack trace.
+    http_response_code(500);
+    echo '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Login error</title>';
+    echo '<style>body{font-family:Arial,sans-serif;background:#f8f9fa;color:#333;padding:2rem;}</style>';
+    echo '</head><body>';
+    echo '<h1>Something went wrong</h1>';
+    echo '<p>We were unable to complete your Google sign‑in. Please try again later or contact support.</p>';
+    echo '</body></html>';
+    exit;
 }
-
-// ---------------------------------------------------------------------
-// 6️⃣  Set session variables – you can store more data if you wish
-// ---------------------------------------------------------------------
-$_SESSION['user_logged_in'] = true;
-$_SESSION['user_id']         = $userId;                // primary key from your users table
-$_SESSION['user_name']       = $user['name'] ?? '';
-$_SESSION['user_email']      = $user['email'];
-
-// ---------------------------------------------------------------------
-// 7️⃣  Redirect the authenticated user to the home page (or dashboard)
-// ---------------------------------------------------------------------
-header('Location: index.php');
-exit;
 ?>
