@@ -71,11 +71,15 @@ class Auth {
         return self::isLoggedIn() && isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin';
     }
 
-    // Page Guards
     public static function requireLogin() {
         if (!self::isLoggedIn()) {
             $_SESSION['redirect_url'] = $_SERVER['REQUEST_URI'];
-            header("Location: login.php");
+            // If we are currently in an admin/ file, redirect to ../login.php instead of login.php
+            if (strpos($_SERVER['PHP_SELF'], '/admin/') !== false) {
+                header("Location: ../login.php");
+            } else {
+                header("Location: login.php");
+            }
             exit;
         }
     }

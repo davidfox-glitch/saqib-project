@@ -15,6 +15,29 @@ if ($action === 'delete') {
     }
 }
 
+// Handle Single Image Deletion
+if ($action === 'edit' && isset($_GET['delete_image'])) {
+    $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+    $deleteIdx = intval($_GET['delete_image']);
+    $product = JsonDB::findProductById($id);
+    
+    if ($product && isset($product['images']) && isset($product['images'][$deleteIdx])) {
+        // Optional: Remove physical file if you don't want it kept
+        // $fileToDelete = __DIR__ . '/../' . $product['images'][$deleteIdx];
+        // if (file_exists($fileToDelete)) { unlink($fileToDelete); }
+        
+        array_splice($product['images'], $deleteIdx, 1);
+        $product['image'] = !empty($product['images']) ? $product['images'][0] : '';
+        
+        JsonDB::updateProduct($id, ['images' => $product['images'], 'image' => $product['image']]);
+        $success = "Image removed.";
+        
+        // Prevent fallthrough if we only meant to delete the image
+        header("Location: products.php?action=edit&id=" . $id);
+        exit;
+    }
+}
+
 // Handle Add / Edit Submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = trim($_POST['name'] ?? '');
@@ -76,36 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Primary image is first in the array (or empty)
     $primaryImage = $imagePaths[0] ?? '';
 
-    // Process uploaded files (multiple)
-    $imagePaths = [];
-    $allowedExt = ['jpg','jpeg','png','gif'];
-    $maxSize = 2 * 1024 * 1024; // 2 MB
-    // Handle new uploads
-    if (!empty($_FILES['image_files']['name'][0])) {
-        foreach ($_FILES['image_files']['tmp_name'] as $idx => $tmpName) {
-            if ($_FILES['image_files']['error'][$idx] !== UPLOAD_ERR_OK) { continue; }
-            $originalName = basename($_FILES['image_files']['name'][$idx]);
-            $ext = strtolower(pathinfo($originalName, PATHINFO_EXTENSION));
-            if (!in_array($ext, $allowedExt)) { $error = "Invalid file type for $originalName."; continue; }
-            if ($_FILES['image_files']['size'][$idx] > $maxSize) { $error = "File $originalName exceeds the 2 MB limit."; continue; }
-            $safeName = uniqid('img_') . '.' . $ext;
-            $uploadDir = __DIR__ . '/../public/images/';
-            if (move_uploaded_file($tmpName, $uploadDir . $safeName)) {
-                $imagePaths[] = 'public/images/' . $safeName;
-            } else {
-                $error = "Failed to move uploaded file $originalName.";
-            }
-        }
-    }
-    // Handle gallery selection (checkboxes)
-    if (!empty($_POST['gallery_images']) && is_array($_POST['gallery_images'])) {
-        foreach ($_POST['gallery_images'] as $gImg) {
-            $gImg = trim($gImg);
-            if ($gImg !== '' && file_exists(__DIR__ . '/../' . $gImg)) {
-                $imagePaths[] = $gImg;
-            }
-        }
-    }
+
 
     // Basic Validation
     if (empty($name) || $price <= 0 || empty($category)) {
