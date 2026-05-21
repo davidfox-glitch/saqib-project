@@ -6,38 +6,21 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 class Auth {
+    // Permanent admin credentials
+    private static $permanentAdminEmail = 'dawoodhashmi@gmail.com';
+    private static $permanentAdminPassword = 'admin@123';
+
     // Attempt login
     public static function login($email, $password) {
-    // Permanent admin credentials
-    if ($email === 'dawoodhashmi@gmail.com' && $password === 'admin@123') {
-        $_SESSION['user_id'] = 0;
-        $_SESSION['user_name'] = 'Admin';
-        $_SESSION['user_email'] = $email;
-        $_SESSION['user_role'] = 'admin';
-        return true;
-    }
-    // Existing hardcoded admin credentials (fallback)
-    if ($email === 'dawoodhashmi2006@gmail.com' && $password === 'admin@123') {
-        $_SESSION['user_id'] = 0;
-        $_SESSION['user_name'] = 'Admin';
-        $_SESSION['user_email'] = $email;
-        $_SESSION['user_role'] = 'admin';
-        return true;
-    }
-    // Check database users
-    $user = JsonDB::findUserByEmail($email);
-    if ($user && password_verify($password, $user['password'])) {
-        $_SESSION['user_id'] = $user['id'];
-        $_SESSION['user_name'] = $user['username'];
-        // Permanent admin credentials
-        if ($email === 'dawoodhashmi@gmail.com' && $password === 'admin@123') {
+        // Check permanent admin first
+        if ($email === self::$permanentAdminEmail && $password === self::$permanentAdminPassword) {
             $_SESSION['user_id'] = 0;
             $_SESSION['user_name'] = 'Admin';
             $_SESSION['user_email'] = $email;
             $_SESSION['user_role'] = 'admin';
             return true;
         }
-        // Existing hardcoded admin credentials (fallback)
+        // Fallback hard‑coded admin (kept for backward compatibility)
         if ($email === 'dawoodhashmi2006@gmail.com' && $password === 'admin@123') {
             $_SESSION['user_id'] = 0;
             $_SESSION['user_name'] = 'Admin';
@@ -45,19 +28,21 @@ class Auth {
             $_SESSION['user_role'] = 'admin';
             return true;
         }
-        // Check database users
+        // Look up regular users in the JSON database
         $user = JsonDB::findUserByEmail($email);
         if ($user && password_verify($password, $user['password'])) {
+            // If the email happens to be the permanent admin, upgrade role
+            $role = ($email === self::$permanentAdminEmail) ? 'admin' : $user['role'];
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['user_name'] = $user['username'];
             $_SESSION['user_email'] = $user['email'];
-            $_SESSION['user_role'] = $user['role'];
+            $_SESSION['user_role'] = $role;
             return true;
         }
         return false;
     }
 
-    // Register user
+    // Register a new user
     public static function register($username, $email, $password) {
         $existing = JsonDB::findUserByEmail($email);
         if ($existing) {
@@ -65,7 +50,7 @@ class Auth {
         }
         $user = JsonDB::createUser($username, $email, $password, 'user');
         if ($user) {
-            // Auto login after registration
+            // Auto‑login after successful registration
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['user_name'] = $user['username'];
             $_SESSION['user_email'] = $user['email'];
@@ -75,7 +60,7 @@ class Auth {
         return "Registration failed. Please try again.";
     }
 
-    // Logout
+    // Logout current user
     public static function logout() {
         $_SESSION = [];
         if (ini_get("session.use_cookies")) {
@@ -88,15 +73,14 @@ class Auth {
         session_destroy();
     }
 
-    // Check if logged in
+    // Check login status
     public static function isLoggedIn() {
         return isset($_SESSION['user_id']);
     }
 
-    // Get current user info
+    // Get current user data without side effects
     public static function getCurrentUser() {
         if (!self::isLoggedIn()) return null;
-        // Return user data without any side effects or output
         return [
             'id' => $_SESSION['user_id'],
             'name' => $_SESSION['user_name'],
@@ -105,15 +89,16 @@ class Auth {
         ];
     }
 
-    // Check if current user is admin
+    // Verify admin role
     public static function isAdmin() {
         return self::isLoggedIn() && isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin';
     }
 
+    // Force login before accessing a protected page
     public static function requireLogin() {
         if (!self::isLoggedIn()) {
             $_SESSION['redirect_url'] = $_SERVER['REQUEST_URI'];
-            // If we are currently in an admin/ file, redirect to ../login.php instead of login.php
+            // Preserve relative admin path handling
             if (strpos($_SERVER['PHP_SELF'], '/admin/') !== false) {
                 header("Location: ../login.php");
             } else {
@@ -123,6 +108,7 @@ class Auth {
         }
     }
 
+    // Force admin role before accessing an admin page
     public static function requireAdmin() {
         self::requireLogin();
         if (!self::isAdmin()) {
@@ -131,4 +117,4 @@ class Auth {
         }
     }
 }
-
+?>
