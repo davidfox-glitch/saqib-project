@@ -12,12 +12,18 @@ if (isset($_SESSION['cart']) && is_array($_SESSION['cart'])) {
 $currentUser = Auth::getCurrentUser();
 ?>
 <!DOCTYPE html>
-<html lang="en" class="h-100">
+<html lang="en" class="h-100" x-data="{ darkMode: localStorage.getItem('darkMode') === 'true' }" :class="{ 'dark-mode': darkMode }">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EXALTIA | Artisanal Fashion Store</title>
     
+    <script>
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.documentElement.classList.add('dark-mode');
+        }
+    </script>
+
     <!-- Bootstrap 5 CSS CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     
@@ -28,6 +34,9 @@ $currentUser = Auth::getCurrentUser();
     
     <!-- Alpine.js CDN -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <!-- Custom CSS Stylesheet -->
+    <link href="public/css/style.css" rel="stylesheet">
 
     <!-- Custom CSS Overrides for a Premium Aesthetic -->
     <style>
@@ -197,15 +206,29 @@ $currentUser = Auth::getCurrentUser();
                 <!-- Right Side Controls -->
                 <div class="d-flex align-items-center gap-2 gap-md-3 order-last">
                     <!-- Search Icon Trigger -->
-                    <button class="btn btn-link text-dark p-2" aria-label="Search">
+                    <button class="btn btn-link p-2" aria-label="Search">
                         <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                         </svg>
                     </button>
 
+                    <!-- Light/Dark Mode Switcher -->
+                    <button class="btn btn-link p-2 border-0" 
+                            @click="darkMode = !darkMode; localStorage.setItem('darkMode', darkMode);" 
+                            aria-label="Toggle Theme">
+                        <!-- Sun Icon (shown in dark mode) -->
+                        <svg x-show="darkMode" style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24" class="text-warning" x-cloak>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 3v1m0 16v1m9-9h-1M4 9H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M14 12a2 2 0 11-4 0 2 2 0 014 0z"/>
+                        </svg>
+                        <!-- Moon Icon (shown in light mode) -->
+                        <svg x-show="!darkMode" style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                        </svg>
+                    </button>
+
                     <!-- Account Dropdown -->
                     <div class="dropdown">
-                        <button class="btn btn-link text-dark p-2 d-flex align-items-center gap-1 dropdown-toggle text-decoration-none" type="button" id="accountDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <button class="btn btn-link p-2 d-flex align-items-center gap-1 dropdown-toggle text-decoration-none" type="button" id="accountDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                             <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                             </svg>
@@ -245,7 +268,7 @@ $currentUser = Auth::getCurrentUser();
                     </div>
 
                     <!-- Cart Bag Trigger -->
-                    <a href="cart.php" class="btn btn-link text-dark p-2 position-relative text-decoration-none" aria-label="Shopping Bag">
+                    <a href="cart.php" class="btn btn-link p-2 position-relative text-decoration-none" aria-label="Shopping Bag">
                         <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
                         </svg>

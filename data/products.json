@@ -110,5 +110,155 @@
         "colors": ["#EFEFEF"],
         "stock": 40,
         "created_at": "2026-05-21 12:30:00"
+    },
+    {
+        "id": 8,
+        "name": "Classic Knit Polo",
+        "price": 75.00,
+        "category": "Polos",
+        "description": "A premium classic knit polo with a modern touch, perfect for smart-casual wear.",
+        "image": "public/images/pexels-introspectivedsgn-9749119.jpg",
+        "images": [
+            "public/images/pexels-introspectivedsgn-9749119.jpg"
+        ],
+        "sizes": ["S", "M", "L"],
+        "colors": ["#8F9779", "#D2C9B1"],
+        "stock": 12,
+        "created_at": "2026-05-21 12:35:00"
+    },
+    {
+        "id": 9,
+        "name": "Vintage Denim Jacket",
+        "price": 135.00,
+        "category": "Denim",
+        "description": "Classic vintage denim jacket made from high-grade Japanese rigid denim.",
+        "image": "public/images/pexels-ayse-58498816-12474715.jpg",
+        "images": [
+            "public/images/pexels-ayse-58498816-12474715.jpg"
+        ],
+        "sizes": ["M", "L", "XL"],
+        "colors": ["#3B82F6", "#1A1A1A"],
+        "stock": 8,
+        "created_at": "2026-05-21 12:40:00"
+    },
+    {
+        "id": 10,
+        "name": "Urban Cargo Denim",
+        "price": 95.00,
+        "category": "Denim",
+        "description": "Modern street style cargo denim pants with spacious pockets and relaxed silhouette.",
+        "image": "public/images/pexels-sakie-bustos-284434029-13071474.jpg",
+        "images": [
+            "public/images/pexels-sakie-bustos-284434029-13071474.jpg"
+        ],
+        "sizes": ["S", "M", "L"],
+        "colors": ["#1A1A1A", "#8F9779"],
+        "stock": 14,
+        "created_at": "2026-05-21 12:45:00"
+    },
+    {
+        "id": 11,
+        "name": "Artisanal Linen Shirt",
+        "price": 85.00,
+        "category": "Shirts",
+        "description": "Soft, breathable premium linen shirt designed for casual elegance and style.",
+        "image": "public/images/pexels-valentina-bondarenko-111153662-9649958.jpg",
+        "images": [
+            "public/images/pexels-valentina-bondarenko-111153662-9649958.jpg"
+        ],
+        "sizes": ["S", "M", "L", "XL"],
+        "colors": ["#EFEFEF", "#D2C9B1"],
+        "stock": 18,
+        "created_at": "2026-05-21 12:50:00"
+    },
+    {
+        "id": 12,
+        "name": "Retro Striped Polo",
+        "price": 68.00,
+        "category": "Polos",
+        "description": "A vintage-inspired retro striped polo, comfortable and stylish for everyday wear.",
+        "image": "public/images/pexels-picmatti-34200743.jpg",
+        "images": [
+            "public/images/pexels-picmatti-34200743.jpg"
+        ],
+        "sizes": ["M", "L", "XL"],
+        "colors": ["#8F9779", "#1A1A1A"],
+        "stock": 22,
+        "created_at": "2026-05-21 12:55:00"
+    },
+    {
+        "id": 13,
+        "name": "Artisanal Knit Polo",
+        "price": 89.00,
+        "category": "Polos",
+        "description": "A refined knit polo with a modern flat collar, crafted from lightweight breathable cotton yarn.",
+        "image": "public/images/pexels-30nudos-adicora-164429726-13697753.jpg",
+        "images": [
+            "public/images/pexels-30nudos-adicora-164429726-13697753.jpg"
+        ],
+        "sizes": ["S", "M", "L", "XL"],
+        "colors": ["#D2C9B1", "#8F9779"],
+        "stock": 15,
+        "created_at": "2026-05-21 13:00:00"
+    },
+    {
+        "id": 14,
+        "name": "Raw Indigo Denim Jacket",
+        "price": 145.00,
+        "category": "Denim",
+        "description": "An iconic heritage denim jacket, tailored from premium Japanese rigid selvedge denim that gets better with time.",
+        "image": "public/images/pexels-sakie-bustos-284434029-13071474.jpg",
+        "images": [
+            "public/images/pexels-sakie-bustos-284434029-13071474.jpg"
+        ],
+        "sizes": ["M", "L", "XL"],
+        "colors": ["#1A1A1A", "#3B82F6"],
+        "stock": 10,
+        "created_at": "2026-05-21 13:05:00"
+    },
+    {
+        "id": 15,
+        "name": "Linen Field Shirt",
+        "price": 78.00,
+        "category": "Shirts",
+        "description": "A lightweight linen utility shirt featuring double chest pockets and a clean band collar layout.",
+        "image": "public/images/pexels-madvortex-16887216.jpg",
+        "images": [
+            "public/images/pexels-madvortex-16887216.jpg"
+        ],
+        "sizes": ["S", "M", "L", "XL"],
+        "colors": ["#EFEFEF", "#8F9779"],
+        "stock": 20,
+        "created_at": "2026-05-21 13:10:00"
+    },
+    {
+        "id": 16,
+        "name": "Textured Cable Polo",
+        "price": 95.00,
+        "category": "Polos",
+        "description": "An elegant textured knit cable-stitch polo that bridges the gap between comfortable knitwear and smart tailoring.",
+        "image": "public/images/pexels-ben-khatry-430197437-15943977.jpg",
+        "images": [
+            "public/images/pexels-ben-khatry-430197437-15943977.jpg"
+        ],
+        "sizes": ["S", "M", "L"],
+        "colors": ["#1A1A1A", "#D2C9B1"],
+        "stock": 12,
+        "created_at": "2026-05-21 13:15:00"
+    },
+    {
+        "id": 17,
+        "name": "Relaxed Utility Shirt",
+        "price": 82.00,
+        "category": "Shirts",
+        "description": "A structured shirt tailored from durable brushed cotton, featuring relaxed shoulders and premium horn buttons.",
+        "image": "public/images/pexels-soufianlafnesh-34741024.jpg",
+        "images": [
+            "public/images/pexels-soufianlafnesh-34741024.jpg"
+        ],
+        "sizes": ["S", "M", "L", "XL"],
+        "colors": ["#8F9779", "#1A1A1A"],
+        "stock": 16,
+        "created_at": "2026-05-21 13:20:00"
     }
 ]

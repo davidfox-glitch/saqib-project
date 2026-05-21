@@ -9,7 +9,7 @@ class Auth {
     // Attempt login
     public static function login($email, $password) {
         // Hardcoded admin credentials
-        if ($email === 'dawoodhashmi2006@gmail.con' && $password === 'admin@123') {
+        if ($email === 'dawoodhashmi2006@gmail.com' && $password === 'admin@123') {
             // Set admin session manually
             $_SESSION['user_id'] = 0;
             $_SESSION['user_name'] = 'Admin';

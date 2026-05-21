@@ -1,0 +1,281 @@
+/* Color Palette Variables */
+:root {
+    --bg-primary: #FAF9F6; /* warm ivory/alabaster */
+    --bg-secondary: #FFFFFF;
+    --text-primary: #1A1A1A;
+    --text-secondary: #707070;
+    --border-color: rgba(26, 26, 26, 0.08);
+    --border-color-hover: rgba(26, 26, 26, 0.2);
+    --accent-color: #8F9779; /* soft sage green */
+    --accent-hover: #757D60;
+    --card-bg: #FFFFFF;
+    --navbar-bg: #FFFFFF;
+    --footer-bg: #FFFFFF;
+    --footer-bottom-bg: #F5F4F0;
+    --input-bg: transparent;
+    --input-border: #1A1A1A;
+    
+    /* Font family defaults */
+    --font-serif: 'Playfair Display', serif;
+    --font-sans: 'Outfit', sans-serif;
+    
+    /* Animation transitions */
+    --transition-speed: 0.4s;
+    --transition-ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Dark Mode Overrides */
+.dark-mode {
+    --bg-primary: #121212; /* charcoal obsidian */
+    --bg-secondary: #1E1E1E; /* deep slate */
+    --text-primary: #F5F4F0; /* soft warm white */
+    --text-secondary: #A0A0A0; /* muted grey */
+    --border-color: rgba(245, 244, 240, 0.12);
+    --border-color-hover: rgba(245, 244, 240, 0.3);
+    --accent-color: #D2C9B1; /* warm gold / champagne */
+    --accent-hover: #E2DBD0;
+    --card-bg: #1E1E1E;
+    --navbar-bg: #121212;
+    --footer-bg: #121212;
+    --footer-bottom-bg: #1A1A1A;
+    --input-bg: transparent;
+    --input-border: #F5F4F0;
+}
+
+/* Global Transitions */
+body, header, footer, .card, .btn, input, select, textarea, div, section, h1, h2, h3, h4, h5, h6, p, a, span {
+    transition: background-color var(--transition-speed) var(--transition-ease),
+                color var(--transition-speed) var(--transition-ease),
+                border-color var(--transition-speed) var(--transition-ease),
+                box-shadow var(--transition-speed) var(--transition-ease);
+}
+
+/* Apply Theme Styles */
+body {
+    background-color: var(--bg-primary) !important;
+    color: var(--text-primary) !important;
+    font-family: var(--font-sans) !important;
+}
+
+.bg-light {
+    background-color: var(--bg-secondary) !important;
+}
+
+.text-dark {
+    color: var(--text-primary) !important;
+}
+
+.text-muted, .text-secondary {
+    color: var(--text-secondary) !important;
+}
+
+.border-light {
+    border-color: var(--border-color) !important;
+}
+
+.border-dark {
+    border-color: var(--text-primary) !important;
+}
+
+/* Navbar Theme Adjustments */
+header.fixed-top {
+    background-color: var(--navbar-bg) !important;
+    border-bottom: 1px solid var(--border-color) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03) !important;
+}
+
+header.fixed-top .navbar-brand {
+    color: var(--text-primary) !important;
+}
+
+header.fixed-top .nav-link {
+    color: var(--text-primary) !important;
+}
+
+header.fixed-top .nav-link:hover {
+    color: var(--accent-color) !important;
+}
+
+header.fixed-top .btn-link {
+    color: var(--text-primary) !important;
+}
+
+header.fixed-top .btn-link:hover {
+    color: var(--accent-color) !important;
+}
+
+header.fixed-top .dropdown-menu {
+    background-color: var(--bg-secondary) !important;
+    border-color: var(--border-color) !important;
+}
+
+header.fixed-top .dropdown-item {
+    color: var(--text-primary) !important;
+}
+
+header.fixed-top .dropdown-item:hover {
+    background-color: var(--bg-primary) !important;
+    color: var(--accent-color) !important;
+}
+
+header.fixed-top .dropdown-header {
+    color: var(--text-secondary) !important;
+    border-bottom: 1px solid var(--border-color) !important;
+}
+
+/* Premium Card & Hover Scale Effect */
+.card {
+    background-color: transparent !important;
+}
+
+.card .ratio {
+    border-color: var(--border-color) !important;
+    background-color: var(--bg-secondary) !important;
+}
+
+.card img {
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+}
+
+.card:hover img {
+    transform: scale(1.05);
+}
+
+.card-body h3 a, .card-body h4 a {
+    color: var(--text-primary) !important;
+}
+
+.card-body h3 a:hover, .card-body h4 a:hover {
+    color: var(--accent-color) !important;
+}
+
+/* Buttons Styling */
+.btn-brand-dark {
+    background-color: var(--text-primary) !important;
+    color: var(--bg-primary) !important;
+    border: 1px solid var(--text-primary) !important;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    border-radius: 0;
+    padding: 1rem 2rem;
+    transition: all 0.3s ease;
+}
+
+.btn-brand-dark:hover {
+    background-color: transparent !important;
+    color: var(--text-primary) !important;
+}
+
+.btn-brand-outline {
+    background-color: transparent !important;
+    color: var(--text-primary) !important;
+    border: 1px solid var(--text-primary) !important;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    border-radius: 0;
+    padding: 1rem 2rem;
+    transition: all 0.3s ease;
+}
+
+.btn-brand-outline:hover {
+    background-color: var(--text-primary) !important;
+    color: var(--bg-primary) !important;
+}
+
+/* Footer Styling */
+footer {
+    background-color: var(--footer-bg) !important;
+    border-top: 1px solid var(--border-color) !important;
+}
+
+footer .serif-title {
+    color: var(--text-primary) !important;
+}
+
+footer p {
+    color: var(--text-secondary) !important;
+}
+
+footer a {
+    color: var(--text-secondary) !important;
+}
+
+footer a:hover {
+    color: var(--accent-color) !important;
+}
+
+footer h4 {
+    color: var(--text-primary) !important;
+}
+
+footer .border-bottom.border-dark {
+    border-color: var(--text-primary) !important;
+}
+
+footer input {
+    color: var(--text-primary) !important;
+}
+
+footer input::placeholder {
+    color: var(--text-secondary) !important;
+    opacity: 0.7;
+}
+
+footer .bg-light {
+    background-color: var(--footer-bottom-bg) !important;
+    border-top: 1px solid var(--border-color) !important;
+}
+
+/* Detail page additions */
+.badge-cart {
+    background-color: var(--accent-color) !important;
+    color: var(--bg-primary) !important;
+}
+
+/* Table overrides for Cart page */
+.table {
+    --bs-table-bg: transparent !important;
+    --bs-table-color: var(--text-primary) !important;
+    --bs-table-border-color: var(--border-color) !important;
+}
+
+.table th {
+    color: var(--text-secondary) !important;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+}
+
+/* Forms override for Register/Login/Checkout */
+.form-control {
+    background-color: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+    border-color: var(--border-color) !important;
+}
+
+.form-control:focus {
+    background-color: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+    border-color: var(--accent-color) !important;
+    box-shadow: none !important;
+}
+
+/* Fix Hero Banner Bottom Strip Background in Dark/Light Modes */
+.position-relative.z-1.bg-white.border-top.border-light.py-3 {
+    background-color: rgba(255, 255, 255, 0.7) !important;
+    border-color: var(--border-color) !important;
+}
+.dark-mode .position-relative.z-1.bg-white.border-top.border-light.py-3 {
+    background-color: rgba(18, 18, 18, 0.7) !important;
+    border-color: var(--border-color) !important;
+}
+
+/* Alpine.js Cloak */
+[x-cloak] {
+    display: none !important;
+}

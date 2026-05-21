@@ -104,90 +104,109 @@ require_once __DIR__ . '/includes/header.php';
         </div>
     </div>
 
-    <!-- 3 Column grid list -->
-    <div class="row g-4">
-        <!-- Polo Column -->
-        <section id="polos">
-            <?php $pPolo = reset($polos); if ($pPolo): ?>
-            <div class="col-md-4">
-                <div class="card border-0 rounded-0 bg-transparent space-y-3">
-                    <div class="position-relative overflow-hidden bg-light ratio ratio-3x4 border border-light">
-                        <!-- Image click goes to product.php -->
-                        <a href="product.php?id=<?=$pPolo['id']?>">
-                            <?php if (file_exists(__DIR__ . '/' . $pPolo['image'])): ?>
-                                <img src="<?=$pPolo['image']?>" class="w-100 h-100 object-fit-cover card-img-top rounded-0" style="object-fit: cover;" alt="<?=htmlspecialchars($pPolo['name'])?>">
-                            <?php else: ?>
-                                <div class="w-100 h-100 d-flex flex-column align-items-center justify-content-center p-4 img-placeholder text-secondary text-center">
-                                    <span class="small font-bold text-uppercase">Place photo here<br><code class="d-block mt-1"><?=$pPolo['image']?></code></span>
-                                </div>
-                            <?php endif; ?>
-                        </a>
-                    </div>
-                    <div class="card-body p-0 mt-3 d-flex justify-content-between align-items-start small font-bold tracking-wider uppercase">
-                        <div>
-                            <h3 class="mb-0 text-dark" style="font-size: 0.8rem;"><a href="product.php?id=<?=$pPolo['id']?>" class="text-dark hover:underline"><?=htmlspecialchars($pPolo['name'])?></a></h3>
-                            <p class="text-muted small mt-1 font-semibold"><?=htmlspecialchars($pPolo['category'])?></p>
-                        </div>
-                        <p class="text-dark mb-0">$<?=number_format($pPolo['price'], 2)?></p>
-                    </div>
-                </div>
+    <!-- Categories Grid Groups -->
+    <div class="space-y-5">
+        <!-- Polos Category Group -->
+        <section id="polos" class="mb-5 pt-3">
+            <div class="border-bottom border-light pb-2 mb-4">
+                <h3 class="serif-title text-uppercase font-light mb-1" style="font-size: 1.5rem; letter-spacing: 0.1em;">POLOS</h3>
+                <p class="small text-muted font-bold text-uppercase" style="font-size: 0.6rem; letter-spacing: 0.1em;">Essential classic and retro knit polos</p>
             </div>
-            <?php endif; ?>
+            <div class="row row-cols-2 row-cols-md-3 g-4">
+                <?php foreach (array_slice($polos, 0, 6) as $pPolo): ?>
+                    <div class="col">
+                        <div class="card h-100 border-0 rounded-0 bg-transparent space-y-3">
+                            <div class="position-relative overflow-hidden bg-light ratio ratio-3x4 border border-light">
+                                <a href="product.php?id=<?= $pPolo['id'] ?>">
+                                    <?php if (file_exists(__DIR__ . '/' . $pPolo['image'])): ?>
+                                        <img src="<?= $pPolo['image'] ?>" class="w-100 h-100 object-fit-cover card-img-top rounded-0" style="object-fit: cover;" alt="<?= htmlspecialchars($pPolo['name']) ?>">
+                                    <?php else: ?>
+                                        <div class="w-100 h-100 d-flex flex-column align-items-center justify-content-center p-4 img-placeholder text-secondary text-center">
+                                            <span class="small font-bold text-uppercase">Place photo here<br><code class="d-block mt-1"><?= $pPolo['image'] ?></code></span>
+                                        </div>
+                                    <?php endif; ?>
+                                </a>
+                            </div>
+                            <div class="card-body p-0 mt-3 d-flex justify-content-between align-items-start small font-bold tracking-wider uppercase">
+                                <div>
+                                    <h4 class="mb-0 text-dark" style="font-size: 0.8rem;"><a href="product.php?id=<?= $pPolo['id'] ?>" class="text-dark hover:underline"><?= htmlspecialchars($pPolo['name']) ?></a></h4>
+                                    <p class="text-muted small mt-1 font-semibold"><?= htmlspecialchars($pPolo['category']) ?></p>
+                                </div>
+                                <p class="text-dark mb-0">$<?= number_format($pPolo['price'], 2) ?></p>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
         </section>
 
-        <!-- Shirt Column -->
-        <?php $pShirt = reset($shirts); if ($pShirt): ?>
-        <div class="col-md-4">
-            <div class="card border-0 rounded-0 bg-transparent space-y-3">
-                <div class="position-relative overflow-hidden bg-light ratio ratio-3x4 border border-light">
-                    <!-- Image click goes to product.php -->
-                    <a href="product.php?id=<?= $pShirt['id'] ?>">
-                        <?php if (file_exists(__DIR__ . '/' . $pShirt['image'])): ?>
-                            <img src="<?= $pShirt['image'] ?>" class="w-100 h-100 object-fit-cover card-img-top rounded-0" style="object-fit: cover;" alt="<?= htmlspecialchars($pShirt['name']) ?>">
-                        <?php else: ?>
-                            <div class="w-100 h-100 d-flex flex-column align-items-center justify-content-center p-4 img-placeholder text-secondary text-center">
-                                <span class="small font-bold text-uppercase">Place photo here<br><code class="d-block mt-1"><?= $pShirt['image'] ?></code></span>
-                            </div>
-                        <?php endif; ?>
-                    </a>
-                </div>
-                <div class="card-body p-0 mt-3 d-flex justify-content-between align-items-start small font-bold tracking-wider uppercase">
-                    <div>
-                        <h3 class="mb-0 text-dark" style="font-size: 0.8rem;"><a href="product.php?id=<?= $pShirt['id'] ?>" class="text-dark hover:underline"><?= htmlspecialchars($pShirt['name']) ?></a></h3>
-                        <p class="text-muted small mt-1 font-semibold"><?= htmlspecialchars($pShirt['category']) ?></p>
-                    </div>
-                    <p class="text-dark mb-0">$<?= number_format($pShirt['price'], 2) ?></p>
-                </div>
+        <!-- Shirts Category Group -->
+        <section id="shirts" class="mb-5 pt-3">
+            <div class="border-bottom border-light pb-2 mb-4">
+                <h3 class="serif-title text-uppercase font-light mb-1" style="font-size: 1.5rem; letter-spacing: 0.1em;">SHIRTS</h3>
+                <p class="small text-muted font-bold text-uppercase" style="font-size: 0.6rem; letter-spacing: 0.1em;">Relaxed tees, graphic prints, and linen basics</p>
             </div>
-        </div>
-        <?php endif; ?>
+            <div class="row row-cols-2 row-cols-md-3 g-4">
+                <?php foreach (array_slice($shirts, 0, 6) as $pShirt): ?>
+                    <div class="col">
+                        <div class="card h-100 border-0 rounded-0 bg-transparent space-y-3">
+                            <div class="position-relative overflow-hidden bg-light ratio ratio-3x4 border border-light">
+                                <a href="product.php?id=<?= $pShirt['id'] ?>">
+                                    <?php if (file_exists(__DIR__ . '/' . $pShirt['image'])): ?>
+                                        <img src="<?= $pShirt['image'] ?>" class="w-100 h-100 object-fit-cover card-img-top rounded-0" style="object-fit: cover;" alt="<?= htmlspecialchars($pShirt['name']) ?>">
+                                    <?php else: ?>
+                                        <div class="w-100 h-100 d-flex flex-column align-items-center justify-content-center p-4 img-placeholder text-secondary text-center">
+                                            <span class="small font-bold text-uppercase">Place photo here<br><code class="d-block mt-1"><?= $pShirt['image'] ?></code></span>
+                                        </div>
+                                    <?php endif; ?>
+                                </a>
+                            </div>
+                            <div class="card-body p-0 mt-3 d-flex justify-content-between align-items-start small font-bold tracking-wider uppercase">
+                                <div>
+                                    <h4 class="mb-0 text-dark" style="font-size: 0.8rem;"><a href="product.php?id=<?= $pShirt['id'] ?>" class="text-dark hover:underline"><?= htmlspecialchars($pShirt['name']) ?></a></h4>
+                                    <p class="text-muted small mt-1 font-semibold"><?= htmlspecialchars($pShirt['category']) ?></p>
+                                </div>
+                                <p class="text-dark mb-0">$<?= number_format($pShirt['price'], 2) ?></p>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </section>
 
-        <!-- Denim Column -->
-        <?php $pDenim = reset($denim); if ($pDenim): ?>
-        <div class="col-md-4">
-            <div class="card border-0 rounded-0 bg-transparent space-y-3">
-                <div class="position-relative overflow-hidden bg-light ratio ratio-3x4 border border-light">
-                    <!-- Image click goes to product.php -->
-                    <a href="product.php?id=<?= $pDenim['id'] ?>">
-                        <?php if (file_exists(__DIR__ . '/' . $pDenim['image'])): ?>
-                            <img src="<?= $pDenim['image'] ?>" class="w-100 h-100 object-fit-cover card-img-top rounded-0" style="object-fit: cover;" alt="<?= htmlspecialchars($pDenim['name']) ?>">
-                        <?php else: ?>
-                            <div class="w-100 h-100 d-flex flex-column align-items-center justify-content-center p-4 img-placeholder text-secondary text-center">
-                                <span class="small font-bold text-uppercase">Place photo here<br><code class="d-block mt-1"><?= $pDenim['image'] ?></code></span>
-                            </div>
-                        <?php endif; ?>
-                    </a>
-                </div>
-                <div class="card-body p-0 mt-3 d-flex justify-content-between align-items-start small font-bold tracking-wider uppercase">
-                    <div>
-                        <h3 class="mb-0 text-dark" style="font-size: 0.8rem;"><a href="product.php?id=<?= $pDenim['id'] ?>" class="text-dark hover:underline"><?= htmlspecialchars($pDenim['name']) ?></a></h3>
-                        <p class="text-muted small mt-1 font-semibold"><?= htmlspecialchars($pDenim['category']) ?></p>
-                    </div>
-                    <p class="text-dark mb-0">$<?= number_format($pDenim['price'], 2) ?></p>
-                </div>
+        <!-- Denim Category Group -->
+        <section id="denim-focus" class="mb-5 pt-3">
+            <div class="border-bottom border-light pb-2 mb-4">
+                <h3 class="serif-title text-uppercase font-light mb-1" style="font-size: 1.5rem; letter-spacing: 0.1em;">DENIM</h3>
+                <p class="small text-muted font-bold text-uppercase" style="font-size: 0.6rem; letter-spacing: 0.1em;">Japanese rigid denim cuts, jackets, and cargo pants</p>
             </div>
-        </div>
-        <?php endif; ?>
+            <div class="row row-cols-2 row-cols-md-3 g-4">
+                <?php foreach (array_slice($denim, 0, 6) as $pDenim): ?>
+                    <div class="col">
+                        <div class="card h-100 border-0 rounded-0 bg-transparent space-y-3">
+                            <div class="position-relative overflow-hidden bg-light ratio ratio-3x4 border border-light">
+                                <a href="product.php?id=<?= $pDenim['id'] ?>">
+                                    <?php if (file_exists(__DIR__ . '/' . $pDenim['image'])): ?>
+                                        <img src="<?= $pDenim['image'] ?>" class="w-100 h-100 object-fit-cover card-img-top rounded-0" style="object-fit: cover;" alt="<?= htmlspecialchars($pDenim['name']) ?>">
+                                    <?php else: ?>
+                                        <div class="w-100 h-100 d-flex flex-column align-items-center justify-content-center p-4 img-placeholder text-secondary text-center">
+                                            <span class="small font-bold text-uppercase">Place photo here<br><code class="d-block mt-1"><?= $pDenim['image'] ?></code></span>
+                                        </div>
+                                    <?php endif; ?>
+                                </a>
+                            </div>
+                            <div class="card-body p-0 mt-3 d-flex justify-content-between align-items-start small font-bold tracking-wider uppercase">
+                                <div>
+                                    <h4 class="mb-0 text-dark" style="font-size: 0.8rem;"><a href="product.php?id=<?= $pDenim['id'] ?>" class="text-dark hover:underline"><?= htmlspecialchars($pDenim['name']) ?></a></h4>
+                                    <p class="text-muted small mt-1 font-semibold"><?= htmlspecialchars($pDenim['category']) ?></p>
+                                </div>
+                                <p class="text-dark mb-0">$<?= number_format($pDenim['price'], 2) ?></p>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </section>
     </div>
 </section>
 

@@ -95,29 +95,7 @@ require_once __DIR__ . '/includes/header.php';
             <button type="submit" class="btn btn-brand-dark w-100 py-3">LOG IN</button>
         </form>
 
-        <!-- Divider -->
-        <div class="position-relative d-flex align-items-center justify-content-center mb-4">
-            <div class="position-absolute w-100" style="top: 50%; border-top: 1px solid #f0f0f0;"></div>
-            <span class="position-relative bg-white px-3 fw-bold text-uppercase text-muted" style="font-size: 0.6rem; letter-spacing: 0.1em;">TEST LOGIN ACCELERATORS</span>
-        </div>
 
-        <!-- Testing Credentials Helper -->
-        <div class="row g-3 mb-4">
-            <div class="col-6">
-                <button 
-                    @click="email = 'admin@exaltia.com'; password = 'admin123';"
-                    class="btn w-100 py-2 fw-bold text-uppercase" 
-                    style="font-size: 0.6rem; letter-spacing: 0.1em; border: 1px solid rgba(143,151,121,0.3); background-color: rgba(143,151,121,0.05); color: #8F9779;"
-                >AUTO-FILL ADMIN</button>
-            </div>
-            <div class="col-6">
-                <button 
-                    @click="email = 'user@exaltia.com'; password = 'user123';"
-                    class="btn w-100 py-2 fw-bold text-uppercase border"
-                    style="font-size: 0.6rem; letter-spacing: 0.1em; background-color: #fafafa; color: #6c757d;"
-                >AUTO-FILL USER</button>
-            </div>
-        </div>
 
         <div class="text-center pt-2">
             <p class="small text-muted mb-0">
