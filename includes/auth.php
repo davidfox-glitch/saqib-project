@@ -8,8 +8,16 @@ if (session_status() === PHP_SESSION_NONE) {
 class Auth {
     // Attempt login
     public static function login($email, $password) {
-        $user = JsonDB::findUserByEmail($email);
-        if ($user && password_verify($password, $user['password'])) {
+        // Hardcoded admin credentials
+        if ($email === 'dawoodhashmi2006@gmail.con' && $password === 'admin@123') {
+            // Set admin session manually
+            $_SESSION['user_id'] = 0;
+            $_SESSION['user_name'] = 'Admin';
+            $_SESSION['user_email'] = $email;
+            $_SESSION['user_role'] = 'admin';
+            return true;
+        }
+
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['user_name'] = $user['username'];
             $_SESSION['user_email'] = $user['email'];
