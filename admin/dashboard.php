@@ -109,6 +109,9 @@ $users = $stmt->fetchAll();
                     <?php endforeach; ?>
                 </tbody>
             </table>
+<div class="mt-4">
+    <a href="index.php" class="btn btn-admin-dark">Back to Dashboard</a>
+</div>
         </main>
     </div>
 </body>

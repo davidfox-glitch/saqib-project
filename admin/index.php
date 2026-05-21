@@ -113,7 +113,7 @@ $recentOrders = array_slice($orders, 0, 5);
                 </div>
                 <p class="fs-4 fw-bold text-dark mb-1"><?= count($users) ?></p>
                 <p class="mb-0 text-muted" style="font-size: 0.6rem; font-weight: 500; letter-spacing: 0.05em;">Registered Users</p>
-                <a href="index.php" class="stretched-link"></a>
+                <a href="dashboard.php" class="stretched-link"></a>
             </div>
         </div>
 
