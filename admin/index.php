@@ -102,6 +102,20 @@ $recentOrders = array_slice($orders, 0, 5);
             </div>
         </div>
     </div>
+        <!-- Users Card -->
+        <div class="col">
+            <div class="bg-white border rounded p-4 shadow-sm h-100">
+                <div class="d-flex align-items-center justify-content-between text-muted mb-2">
+                    <span class="fw-bold text-uppercase" style="font-size: 0.6rem; letter-spacing: 0.12em;">Users</span>
+                    <svg class="admin-accent" style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                </div>
+                <p class="fs-4 fw-bold text-dark mb-1"><?= count($users) ?></p>
+                <p class="mb-0 text-muted" style="font-size: 0.6rem; font-weight: 500; letter-spacing: 0.05em;">Registered Users</p>
+                <a href="dashboard.php" class="stretched-link"></a>
+            </div>
+        </div>
 
     <!-- Recent Orders Card -->
     <div class="bg-white border rounded shadow-sm p-4 p-md-5">
