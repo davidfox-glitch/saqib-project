@@ -168,7 +168,9 @@ class JsonDB {
             "image" => $data['image'] ?? '',
             "sizes" => is_array($data['sizes']) ? $data['sizes'] : explode(',', $data['sizes']),
             "colors" => is_array($data['colors']) ? $data['colors'] : explode(',', $data['colors']),
-            "stock" => intval($data['stock'])
+            "stock" => intval($data['stock']),
+            "created_at" => date('Y-m-d H:i:s'),
+            "created_at" => date('Y-m-d H:i:s')
         ];
 
         $products[] = $newProduct;

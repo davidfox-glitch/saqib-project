@@ -26,6 +26,87 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $colors_input = trim($_POST['colors'] ?? '');
     $stock = intval($_POST['stock'] ?? 0);
 
+    // Initialize image handling
+    $imagePaths = [];
+    $allowedExt = ['jpg','jpeg','png','gif'];
+    $maxSize = 2 * 1024 * 1024; // 2 MB
+
+    // Process newly uploaded files (multiple)
+    if (!empty($_FILES['image_files']['name'][0])) {
+        foreach ($_FILES['image_files']['tmp_name'] as $idx => $tmpName) {
+            if ($_FILES['image_files']['error'][$idx] !== UPLOAD_ERR_OK) { continue; }
+            $originalName = basename($_FILES['image_files']['name'][$idx]);
+            $ext = strtolower(pathinfo($originalName, PATHINFO_EXTENSION));
+            if (!in_array($ext, $allowedExt)) {
+                $error = "Invalid file type for $originalName.";
+                continue;
+            }
+            if ($_FILES['image_files']['size'][$idx] > $maxSize) {
+                $error = "File $originalName exceeds the 2 MB limit.";
+                continue;
+            }
+            $safeName = uniqid('img_') . '.' . $ext;
+            $uploadDir = __DIR__ . '/../public/images/';
+            if (move_uploaded_file($tmpName, $uploadDir . $safeName)) {
+                $imagePaths[] = 'public/images/' . $safeName;
+            } else {
+                $error = "Failed to move uploaded file $originalName.";
+            }
+        }
+    }
+
+    // Process gallery selection (checkboxes)
+    if (!empty($_POST['gallery_images']) && is_array($_POST['gallery_images'])) {
+        foreach ($_POST['gallery_images'] as $gImg) {
+            $gImg = trim($gImg);
+            if ($gImg !== '' && file_exists(__DIR__ . '/../' . $gImg)) {
+                $imagePaths[] = $gImg;
+            }
+        }
+    }
+
+    // If editing and no new images provided, retain existing images
+    if ($action === 'edit' && empty($imagePaths)) {
+        $existingProduct = JsonDB::findProductById($id);
+        if ($existingProduct && !empty($existingProduct['images'])) {
+            $imagePaths = $existingProduct['images'];
+        }
+    }
+
+    // Primary image is first in the array (or empty)
+    $primaryImage = $imagePaths[0] ?? '';
+
+    // Process uploaded files (multiple)
+    $imagePaths = [];
+    $allowedExt = ['jpg','jpeg','png','gif'];
+    $maxSize = 2 * 1024 * 1024; // 2 MB
+    // Handle new uploads
+    if (!empty($_FILES['image_files']['name'][0])) {
+        foreach ($_FILES['image_files']['tmp_name'] as $idx => $tmpName) {
+            if ($_FILES['image_files']['error'][$idx] !== UPLOAD_ERR_OK) { continue; }
+            $originalName = basename($_FILES['image_files']['name'][$idx]);
+            $ext = strtolower(pathinfo($originalName, PATHINFO_EXTENSION));
+            if (!in_array($ext, $allowedExt)) { $error = "Invalid file type for $originalName."; continue; }
+            if ($_FILES['image_files']['size'][$idx] > $maxSize) { $error = "File $originalName exceeds the 2 MB limit."; continue; }
+            $safeName = uniqid('img_') . '.' . $ext;
+            $uploadDir = __DIR__ . '/../public/images/';
+            if (move_uploaded_file($tmpName, $uploadDir . $safeName)) {
+                $imagePaths[] = 'public/images/' . $safeName;
+            } else {
+                $error = "Failed to move uploaded file $originalName.";
+            }
+        }
+    }
+    // Handle gallery selection (checkboxes)
+    if (!empty($_POST['gallery_images']) && is_array($_POST['gallery_images'])) {
+        foreach ($_POST['gallery_images'] as $gImg) {
+            $gImg = trim($gImg);
+            if ($gImg !== '' && file_exists(__DIR__ . '/../' . $gImg)) {
+                $imagePaths[] = $gImg;
+            }
+        }
+    }
+
     // Basic Validation
     if (empty($name) || $price <= 0 || empty($category)) {
         $error = "Name, price, and category are required.";
@@ -39,11 +120,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'price' => $price,
             'category' => $category,
             'description' => $description,
-            'image' => $image,
+            'image' => $imagePaths[0] ?? '', // primary image (first)
+            'images' => $imagePaths,
             'sizes' => $sizes,
             'colors' => $colors,
             'stock' => $stock
         ];
+
+        // If editing and no new image provided, retain existing image
+        if ($action === 'edit' && empty($image)) {
+            $existingProduct = JsonDB::findProductById($id);
+            if ($existingProduct) {
+                $data['image'] = $existingProduct['image'];
+            }
+        }
 
         if ($action === 'edit') {
             $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
@@ -114,7 +204,7 @@ $products = JsonDB::getProducts();
                 <?= $action === 'edit' ? 'Edit Product: #' . $editProduct['id'] : 'Create New Catalog Item' ?>
             </h3>
 
-            <form action="products.php?action=<?= $action ?><?= $action === 'edit' ? '&id=' . $editProduct['id'] : '' ?>" method="POST">
+            <form action="products.php?action=<?= $action ?><?= $action === 'edit' ? '&id=' . $editProduct['id'] : '' ?>" method="POST" enctype="multipart/form-data">
                 
                 <div class="row g-3 mb-3">
                     <!-- Product Title -->
@@ -173,14 +263,37 @@ $products = JsonDB::getProducts();
 
                 <!-- Image Path -->
                 <div class="mb-3">
-                    <label class="form-label fw-bold text-uppercase text-muted" style="font-size: 0.6rem; letter-spacing: 0.12em;">Product Image File Name</label>
-                    <input 
-                        type="text" name="image" 
-                        class="form-control rounded-0 border-secondary-subtle py-2" style="font-size: 0.8rem;"
-                        placeholder="public/images/polo_knit.jpg"
-                        value="<?= $action === 'edit' ? htmlspecialchars($editProduct['image']) : 'public/images/' ?>"
-                    >
-                    <p class="form-text text-muted mt-1" style="font-size: 0.65rem;">Define a filename. The client can drop the corresponding file into the <code>public/images/</code> folder.</p>
+                    <label class="form-label fw-bold text-uppercase text-muted" style="font-size: 0.6rem; letter-spacing: 0.12em;">Product Images</label>
+                    <!-- Current images with delete option (edit mode) -->
+                    <?php if ($action === 'edit' && !empty($editProduct['images'])): ?>
+                        <div class="mb-2 d-flex flex-wrap gap-2">
+                            <?php foreach ($editProduct['images'] as $idx => $img): ?>
+                                <div class="position-relative" style="width:80px; height:80px;">
+                                    <img src="../<?= htmlspecialchars($img) ?>" alt="Image" style="width:100%; height:100%; object-fit:cover;" />
+                                    <a href="products.php?action=edit&id=<?= $editProduct['id'] ?>&delete_image=<?= $idx ?>" class="position-absolute top-0 end-0 btn btn-sm btn-danger" style="padding:0 4px; line-height:1;" title="Delete">×</a>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
+                    <!-- Upload new images -->
+                    <input type="file" name="image_files[]" multiple accept="image/*" class="form-control rounded-0 border-secondary-subtle py-2" style="font-size: 0.8rem;" />
+                    <p class="form-text text-muted mt-1" style="font-size: 0.65rem;">Upload new images or select from the gallery below.</p>
+                    <!-- Gallery selection (checkboxes) -->
+                    <div class="gallery mt-2" style="display:flex; flex-wrap:wrap; gap:8px;">
+                        <?php
+                        $galleryPath = __DIR__ . '/../public/images/';
+                        $files = array_diff(scandir($galleryPath), ['.', '..']);
+                        foreach ($files as $file) {
+                            if (preg_match('/\.(jpe?g|png|gif)$/i', $file)) {
+                                $fileUrl = '../public/images/' . $file;
+                                echo "<label style='cursor:pointer;'>";
+                                echo "<input type='checkbox' name='gallery_images[]' value='public/images/{$file}' style='display:none;'" . (in_array('public/images/'.$file, $editProduct['images'] ?? []) ? ' checked' : '') . " />";
+                                echo "<img src='{$fileUrl}' alt='{$file}' style='max-height:60px; border:1px solid #ccc; padding:2px;' />";
+                                echo "</label>";
+                            }
+                        }
+                        ?>
+                    </div>
                 </div>
 
                 <div class="row g-3 mb-4">
