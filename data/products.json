@@ -1,51 +1,114 @@
 [
-    "image": "public/images/denim_shirt.jpg",
-    "sizes": ["M", "L", "XL"],
-    "colors": ["#2B4C7E", "#1C2D42"],
-    "stock": 8
-  },
-  {
-    "id": 5,
-    "name": "Structured Denim Jeans",
-    "price": 125.00,
-    "category": "Denim",
-    "description": "Classic straight-leg jeans crafted from rigid raw denim. Designed to wear in beautifully over time, featuring a button fly and five-pocket styling.",
-    "image": "public/images/denim_jeans.jpg",
-    "sizes": ["30", "32", "34", "36"],
-    "colors": ["#1C2D42", "#4B5563"],
-    "stock": 12
-  },
-  {
-    "id": 6,
-    "name": "Layered Cotton Tee",
-    "price": 60.00,
-    "category": "Shirts",
-    "description": "A double-layered t-shirt offering a modern layered contrast look at the sleeves and hem. Made from premium lightweight pima cotton.",
-    "image": "public/images/layered_tee.jpg",
-    "sizes": ["S", "M", "L"],
-    "colors": ["#EFEFEF", "#1A1A1A"],
-    "stock": 18
-  },
-  {
-    "id": 7,
-    "name": "Linen Summer Shirt",
-    "price": 95.00,
-    "category": "Shirts",
-    "description": "Cut for a relaxed fit, this short-sleeve summer shirt is crafted from 100% breathable flax linen. Features a resort collar and a curved hem.",
-    "image": "public/images/summer_shirt.jpg",
-    "sizes": ["S", "M", "L", "XL"],
-    "colors": ["#FFFFFF", "#D2C9B1", "#4B5563"],
-    "stock": 20
-  },
-  {
-    "id": 8,
-    "name": "Knitted Zip Polo",
-    "price": 98.00,
-    "category": "Polos",
-    "description": "A contemporary knit polo featuring a metal quarter-zip closure, ribbed collar, and fine-gauge knit structure in a rich olive-gray hue.",
-    "image": "public/images/zip_polo.jpg",
-    "sizes": ["S", "M", "L", "XL"],
-    "colors": ["#4F5D53", "#1A1A1A"],
-    "stock": 14
-  }
+    {
+        "id": 1,
+        "name": "Summer Vibe Outfit",
+        "price": 120.00,
+        "category": "Shirts",
+        "description": "A stylish summer outfit featuring light materials, perfect for hot weather.",
+        "image": "public/images/pexels-27-1-418919857-18465316.jpg",
+        "images": [
+            "public/images/pexels-27-1-418919857-18465316.jpg",
+            "public/images/pexels-30nudos-adicora-164429726-13697753.jpg"
+        ],
+        "sizes": ["S", "M", "L"],
+        "colors": ["#8F9779", "#EFEFEF"],
+        "stock": 20,
+        "created_at": "2026-05-21 12:00:00"
+    },
+    {
+        "id": 2,
+        "name": "Casual Urban Denim",
+        "price": 85.00,
+        "category": "Denim",
+        "description": "High-quality denim for an everyday urban look.",
+        "image": "public/images/pexels-addy-bronzzz-264850064-19461517.jpg",
+        "images": [
+            "public/images/pexels-addy-bronzzz-264850064-19461517.jpg",
+            "public/images/pexels-ayse-58498816-12474715.jpg"
+        ],
+        "sizes": ["M", "L", "XL"],
+        "colors": ["#1A1A1A", "#3B82F6"],
+        "stock": 15,
+        "created_at": "2026-05-21 12:05:00"
+    },
+    {
+        "id": 3,
+        "name": "Evening Elegance Polo",
+        "price": 95.00,
+        "category": "Polos",
+        "description": "Elegant polo shirt for evening gatherings.",
+        "image": "public/images/pexels-ben-khatry-430197437-15943977.jpg",
+        "images": [
+            "public/images/pexels-ben-khatry-430197437-15943977.jpg",
+            "public/images/pexels-introspectivedsgn-9749119.jpg"
+        ],
+        "sizes": ["S", "M", "L"],
+        "colors": ["#1A1A1A", "#D2C9B1"],
+        "stock": 10,
+        "created_at": "2026-05-21 12:10:00"
+    },
+    {
+        "id": 4,
+        "name": "Street Style Graphic Tee",
+        "price": 45.00,
+        "category": "Shirts",
+        "description": "Comfortable and trendy street style tee with abstract patterns.",
+        "image": "public/images/pexels-jibarofoto-11962316.jpg",
+        "images": [
+            "public/images/pexels-jibarofoto-11962316.jpg",
+            "public/images/pexels-madvortex-16887216.jpg"
+        ],
+        "sizes": ["S", "M", "L", "XL"],
+        "colors": ["#EFEFEF", "#8F9779"],
+        "stock": 30,
+        "created_at": "2026-05-21 12:15:00"
+    },
+    {
+        "id": 5,
+        "name": "Premium Cotton Polo",
+        "price": 65.00,
+        "category": "Polos",
+        "description": "Breathable cotton polo for casual and semi-formal wear.",
+        "image": "public/images/pexels-marlon-alves-2016519-8162654.jpg",
+        "images": [
+            "public/images/pexels-marlon-alves-2016519-8162654.jpg",
+            "public/images/pexels-picmatti-34200743.jpg"
+        ],
+        "sizes": ["M", "L", "XL"],
+        "colors": ["#D2C9B1", "#1A1A1A"],
+        "stock": 25,
+        "created_at": "2026-05-21 12:20:00"
+    },
+    {
+        "id": 6,
+        "name": "Signature Collection Denim",
+        "price": 110.00,
+        "category": "Denim",
+        "description": "Our signature collection denim with durable stitching and modern fit.",
+        "image": "public/images/pexels-rajatsahuphotography-30892137.jpg",
+        "images": [
+            "public/images/pexels-rajatsahuphotography-30892137.jpg",
+            "public/images/pexels-sakie-bustos-284434029-13071474.jpg"
+        ],
+        "sizes": ["S", "M", "L"],
+        "colors": ["#1A1A1A", "#8F9779"],
+        "stock": 18,
+        "created_at": "2026-05-21 12:25:00"
+    },
+    {
+        "id": 7,
+        "name": "Minimalist White Shirt",
+        "price": 55.00,
+        "category": "Shirts",
+        "description": "Essential minimalist white shirt for any wardrobe.",
+        "image": "public/images/pexels-soufianlafnesh-34741024.jpg",
+        "images": [
+            "public/images/pexels-soufianlafnesh-34741024.jpg",
+            "public/images/pexels-valentina-bondarenko-111153662-9649958.jpg"
+        ],
+        "sizes": ["S", "M", "L", "XL"],
+        "colors": ["#EFEFEF"],
+        "stock": 40,
+        "created_at": "2026-05-21 12:30:00"
+    }
 ]

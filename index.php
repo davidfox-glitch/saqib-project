@@ -40,9 +40,8 @@ require_once __DIR__ . '/includes/header.php';
         <template x-for="(slide, index) in slides" :key="index">
             <img 
                 :src="slide" 
-                class="position-absolute top-0 start-0 w-100 h-100 opacity-90 transition-all duration-1000" 
-                style="object-fit: cover; transition: opacity 1s ease-in-out;" 
-                :style="activeIndex === index ? 'opacity: 1; z-index: 1;' : 'opacity: 0; z-index: 0;'"
+                class="position-absolute top-0 start-0 w-100 h-100" 
+                :style="`object-fit: cover; transition: opacity 1s ease-in-out; ${activeIndex === index ? 'opacity: 0.9; z-index: 1;' : 'opacity: 0; z-index: 0;'}`"
                 alt="Artisanal Collection Hero">
         </template>
 
