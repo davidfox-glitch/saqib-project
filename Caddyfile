@@ -1,0 +1,1 @@
+# Caddyfile for Railway deployment\n# Disable automatic HTTPS as Railway provides its own TLS termination\n{\n    auto_https off\n}\n\n# Serve the PHP application using FrankenPHP\n:80 {\n    root * .\n    php_fastcgi unix//run/frankenphp.sock\n    file_server\n}\n
