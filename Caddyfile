@@ -5,7 +5,7 @@
 }
 
 # Serve the PHP application using FrankenPHP
-:${PORT} {
+:{$PORT} {
     root * /app
     php_fastcgi unix//run/frankenphp.sock
     file_server
