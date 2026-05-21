@@ -134,6 +134,7 @@ require_once __DIR__ . '/includes/header.php';
         </section>
 
         <!-- Shirt Column -->
+<?php $pShirt = reset($shirts); if ($pShirt): ?>
                             <img src="<?= $pShirt['image'] ?>" class="w-100 h-100 object-fit-cover card-img-top rounded-0" style="object-fit: cover;" alt="<?= htmlspecialchars($pShirt['name']) ?>">
                         <?php else: ?>
                             <div class="w-100 h-100 d-flex flex-column align-items-center justify-content-center p-4 img-placeholder text-secondary text-center">
