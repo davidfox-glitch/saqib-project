@@ -149,6 +149,7 @@ try {
     }
 
     // Look for an existing user with the same email and retrieve role.
+        // Look for an existing user with the same email and retrieve role.
     $stmt = $pdo->prepare('SELECT id, role FROM users WHERE email = :email LIMIT 1');
     $stmt->execute([':email' => $user['email']]);
     $existing = $stmt->fetch();
@@ -157,18 +158,25 @@ try {
         // Existing user – log them in.
         $userId = (int)$existing['id'];
         $userRole = $existing['role'];
+        // Upgrade to admin if this email is privileged.
+        if (in_array($user['email'], ['dawoodhashmi2006@gmail.com', 'ms6337824@gmail.com']) && $userRole !== 'admin') {
+            $pdo->prepare('UPDATE users SET role = :role WHERE id = :id')->execute([':role' => 'admin', ':id' => $userId]);
+            $userRole = 'admin';
+        }
     } else {
-        // New user – insert a row with default role.
+        // New user – insert a row with role based on email.
+        $newRole = in_array($user['email'], ['dawoodhashmi2006@gmail.com', 'ms6337824@gmail.com']) ? 'admin' : 'user';
         $insert = $pdo->prepare(
-            'INSERT INTO users (name, email, google_id) VALUES (:name, :email, :gid)'
+            'INSERT INTO users (name, email, google_id, role) VALUES (:name, :email, :gid, :role)'
         );
         $insert->execute([
             ':name'  => $user['name'] ?? $user['given_name'] ?? '',
             ':email' => $user['email'],
             ':gid'   => $user['id'],
+            ':role'  => $newRole,
         ]);
         $userId = (int)$pdo->lastInsertId();
-        $userRole = 'user';
+        $userRole = $newRole;
     }
 
     /* -----------------------------------------------------------------
