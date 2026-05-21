@@ -1,0 +1,90 @@
+[
+  {
+    "id": 1,
+    "name": "Artisanal Polo Knit",
+    "price": 89.00,
+    "category": "Polos",
+    "description": "Crafted from a premium cotton-linen blend, this short-sleeve polo knit shirt features a clean open collar, ribbed trims, and a relaxed silhouette perfect for warm weather.",
+    "image": "public/images/polo_knit.jpg",
+    "sizes": ["S", "M", "L", "XL"],
+    "colors": ["#8F9779", "#D2C9B1", "#EFEFEF"],
+    "stock": 15
+  },
+  {
+    "id": 2,
+    "name": "Relaxed Cotton Tee",
+    "price": 45.00,
+    "category": "Shirts",
+    "description": "An everyday essential. Made from heavyweight 100% organic cotton, this t-shirt offers a structured drape, dropped shoulders, and a clean crew neck.",
+    "image": "public/images/white_tee.jpg",
+    "sizes": ["S", "M", "L", "XL"],
+    "colors": ["#EFEFEF", "#1A1A1A", "#8F9779"],
+    "stock": 25
+  },
+  {
+    "id": 3,
+    "name": "Artistic Print Tee",
+    "price": 55.00,
+    "category": "Shirts",
+    "description": "Featuring a subtle abstract screenprint across the chest, this relaxed-fit tee is cut from soft, breathable cotton single jersey.",
+    "image": "public/images/print_tee.jpg",
+    "sizes": ["S", "M", "L", "XL"],
+    "colors": ["#A2B5CD", "#EFEFEF"],
+    "stock": 10
+  },
+  {
+    "id": 4,
+    "name": "Oversized Denim Shirt",
+    "price": 110.00,
+    "category": "Denim",
+    "description": "Constructed from 12oz Japanese denim, this button-up shirt features utility chest pockets, contrast stitching, and an oversized aesthetic.",
+    "image": "public/images/denim_shirt.jpg",
+    "sizes": ["M", "L", "XL"],
+    "colors": ["#2B4C7E", "#1C2D42"],
+    "stock": 8
+  },
+  {
+    "id": 5,
+    "name": "Structured Denim Jeans",
+    "price": 125.00,
+    "category": "Denim",
+    "description": "Classic straight-leg jeans crafted from rigid raw denim. Designed to wear in beautifully over time, featuring a button fly and five-pocket styling.",
+    "image": "public/images/denim_jeans.jpg",
+    "sizes": ["30", "32", "34", "36"],
+    "colors": ["#1C2D42", "#4B5563"],
+    "stock": 12
+  },
+  {
+    "id": 6,
+    "name": "Layered Cotton Tee",
+    "price": 60.00,
+    "category": "Shirts",
+    "description": "A double-layered t-shirt offering a modern layered contrast look at the sleeves and hem. Made from premium lightweight pima cotton.",
+    "image": "public/images/layered_tee.jpg",
+    "sizes": ["S", "M", "L"],
+    "colors": ["#EFEFEF", "#1A1A1A"],
+    "stock": 18
+  },
+  {
+    "id": 7,
+    "name": "Linen Summer Shirt",
+    "price": 95.00,
+    "category": "Shirts",
+    "description": "Cut for a relaxed fit, this short-sleeve summer shirt is crafted from 100% breathable flax linen. Features a resort collar and a curved hem.",
+    "image": "public/images/summer_shirt.jpg",
+    "sizes": ["S", "M", "L", "XL"],
+    "colors": ["#FFFFFF", "#D2C9B1", "#4B5563"],
+    "stock": 20
+  },
+  {
+    "id": 8,
+    "name": "Knitted Zip Polo",
+    "price": 98.00,
+    "category": "Polos",
+    "description": "A contemporary knit polo featuring a metal quarter-zip closure, ribbed collar, and fine-gauge knit structure in a rich olive-gray hue.",
+    "image": "public/images/zip_polo.jpg",
+    "sizes": ["S", "M", "L", "XL"],
+    "colors": ["#4F5D53", "#1A1A1A"],
+    "stock": 14
+  }
+]

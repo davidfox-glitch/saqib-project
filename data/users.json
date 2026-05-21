@@ -1,0 +1,16 @@
+[
+    {
+        "id": 1,
+        "username": "Admin",
+        "email": "admin@exaltia.com",
+        "password": "$2y$12$r7fmblSiz7JE0WXEf78C..5gb0NW95eAPnYjfH2qTN4DD4J7RRoUm",
+        "role": "admin"
+    },
+    {
+        "id": 2,
+        "username": "John Doe",
+        "email": "user@exaltia.com",
+        "password": "$2y$12$gDd3OHTNC6nBpi2p8PAZ1.4dCz3dAOa/dCqMJgjS1xyFwVjS3Zbs6",
+        "role": "user"
+    }
+]
