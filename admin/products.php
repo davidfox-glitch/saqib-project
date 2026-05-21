@@ -70,6 +70,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             $safeName = uniqid('img_') . '.' . $ext;
             $uploadDir = __DIR__ . '/../public/images/';
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0777, true);
+            }
             if (move_uploaded_file($tmpName, $uploadDir . $safeName)) {
                 $imagePaths[] = 'public/images/' . $safeName;
             } else {
@@ -276,7 +279,10 @@ $products = JsonDB::getProducts();
                     <div class="gallery mt-2" style="display:flex; flex-wrap:wrap; gap:8px;">
                         <?php
                         $galleryPath = __DIR__ . '/../public/images/';
-                        $files = array_diff(scandir($galleryPath), ['.', '..']);
+                        $files = [];
+                        if (is_dir($galleryPath)) {
+                            $files = array_diff(scandir($galleryPath), ['.', '..']);
+                        }
                         foreach ($files as $file) {
                             if (preg_match('/\.(jpe?g|png|gif)$/i', $file)) {
                                 $fileUrl = '../public/images/' . $file;
