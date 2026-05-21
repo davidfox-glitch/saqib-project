@@ -94,41 +94,44 @@ require_once __DIR__ . '/includes/header.php';
 <section id="categories" class="container max-w-7xl mx-auto py-5 px-4 px-md-5 my-5">
     <div class="mb-5" style="max-width: 450px;">
         <h2 class="small font-bold text-muted text-uppercase tracking-widest mb-3">CATEGORIES IN FOCUS</h2>
-        <div class="d-flex gap-4 small font-bold text-uppercase tracking-widest text-dark">
-            <span class="border-bottom border-dark pb-1 cursor-pointer">POLOS</span>
-            <span class="text-muted pb-1 cursor-pointer hover:text-dark transition-colors">SHIRTS</span>
-            <span class="text-muted pb-1 cursor-pointer hover:text-dark transition-colors">DENIM</span>
+        <!-- Category Navigation Links -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <a href="#polos" class="text-muted small font-bold text-uppercase" style="font-size: 0.6rem; letter-spacing: 0.12em;">POLOS</a>
+            <a href="#shirts" class="text-muted small font-bold text-uppercase" style="font-size: 0.6rem; letter-spacing: 0.12em;">SHIRTS</a>
+            <a href="#denim" class="text-muted small font-bold text-uppercase" style="font-size: 0.6rem; letter-spacing: 0.12em;">DENIM</a>
         </div>
     </div>
 
     <!-- 3 Column grid list -->
     <div class="row g-4">
         <!-- Polo Column -->
-        <?php $pPolo = reset($polos); if ($pPolo): ?>
-        <div class="col-md-4">
-            <div class="card border-0 rounded-0 bg-transparent space-y-3">
-                <div class="position-relative overflow-hidden bg-light ratio ratio-3x4 border border-light">
-                    <!-- Image click goes to product.php -->
-                    <a href="product.php?id=<?= $pPolo['id'] ?>">
-                        <?php if (file_exists(__DIR__ . '/' . $pPolo['image'])): ?>
-                            <img src="<?= $pPolo['image'] ?>" class="w-100 h-100 object-fit-cover card-img-top rounded-0" style="object-fit: cover;" alt="<?= htmlspecialchars($pPolo['name']) ?>">
-                        <?php else: ?>
-                            <div class="w-100 h-100 d-flex flex-column align-items-center justify-content-center p-4 img-placeholder text-secondary text-center">
-                                <span class="small font-bold text-uppercase">Place photo here<br><code class="d-block mt-1"><?= $pPolo['image'] ?></code></span>
-                            </div>
-                        <?php endif; ?>
-                    </a>
-                </div>
-                <div class="card-body p-0 mt-3 d-flex justify-content-between align-items-start small font-bold tracking-wider uppercase">
-                    <div>
-                        <h3 class="mb-0 text-dark" style="font-size: 0.8rem;"><a href="product.php?id=<?= $pPolo['id'] ?>" class="text-dark hover:underline"><?= htmlspecialchars($pPolo['name']) ?></a></h3>
-                        <p class="text-muted small mt-1 font-semibold"><?= htmlspecialchars($pPolo['category']) ?></p>
+        <section id="polos">
+            <?php $pPolo = reset($polos); if ($pPolo): ?>
+            <div class="col-md-4">
+                <div class="card border-0 rounded-0 bg-transparent space-y-3">
+                    <div class="position-relative overflow-hidden bg-light ratio ratio-3x4 border border-light">
+                        <!-- Image click goes to product.php -->
+                        <a href="product.php?id=<?=$pPolo['id']?>">
+                            <?php if (file_exists(__DIR__ . '/' . $pPolo['image'])): ?>
+                                <img src="<?=$pPolo['image']?>" class="w-100 h-100 object-fit-cover card-img-top rounded-0" style="object-fit: cover;" alt="<?=htmlspecialchars($pPolo['name'])?>">
+                            <?php else: ?>
+                                <div class="w-100 h-100 d-flex flex-column align-items-center justify-content-center p-4 img-placeholder text-secondary text-center">
+                                    <span class="small font-bold text-uppercase">Place photo here<br><code class="d-block mt-1"><?=$pPolo['image']?></code></span>
+                                </div>
+                            <?php endif; ?>
+                        </a>
                     </div>
-                    <p class="text-dark mb-0">$<?= number_format($pPolo['price'], 2) ?></p>
+                    <div class="card-body p-0 mt-3 d-flex justify-content-between align-items-start small font-bold tracking-wider uppercase">
+                        <div>
+                            <h3 class="mb-0 text-dark" style="font-size: 0.8rem;"><a href="product.php?id=<?=$pPolo['id']?>" class="text-dark hover:underline"><?=htmlspecialchars($pPolo['name'])?></a></h3>
+                            <p class="text-muted small mt-1 font-semibold"><?=htmlspecialchars($pPolo['category'])?></p>
+                        </div>
+                        <p class="text-dark mb-0">$<?=number_format($pPolo['price'], 2)?></p>
+                    </div>
                 </div>
             </div>
-        </div>
-        <?php endif; ?>
+            <?php endif; ?>
+        </section>
 
         <!-- Shirt Column -->
         <?php $pShirt = reset($shirts); if ($pShirt): ?>

@@ -225,6 +225,13 @@ function updateHiddenInputs() {
 
 // Initialize on page load
 updateHiddenInputs();
+// Highlight cards that are already part of the hero slider
+const currentHero = <?php echo json_encode($currentHero); ?>;
+document.querySelectorAll('.hero-card').forEach(card => {
+    if (currentHero.includes(card.dataset.path)) {
+        card.classList.add('selected');
+    }
+});
 </script>
 
 <?php require_once __DIR__ . '/footer.php'; ?>
