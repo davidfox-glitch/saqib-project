@@ -60,42 +60,56 @@ $users = $stmt->fetchAll();
     </style>
 </head>
 <body>
-    <h1>Recent Users</h1>
-    <?php if (!empty($_SESSION['flash'])): ?>
-        <div class="flash"><?php echo htmlspecialchars($_SESSION['flash']); unset($_SESSION['flash']); ?></div>
-    <?php endif; ?>
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Role</th>
-                <th>Joined</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($users as $u): ?>
-                <tr>
-                    <td><?php echo $u['id']; ?></td>
-                    <td><?php echo htmlspecialchars($u['name']); ?></td>
-                    <td><?php echo htmlspecialchars($u['email']); ?></td>
-                    <td><?php echo $u['role'] === 'admin' ? '<span class="admin">Admin</span>' : 'User'; ?></td>
-                    <td><?php echo $u['created_at']; ?></td>
-                    <td>
-                        <?php if ($u['role'] !== 'admin'): ?>
-                            <form method="post" style="margin:0;">
-                                <input type="hidden" name="promote_id" value="<?php echo $u['id']; ?>" />
-                                <button class="btn" type="submit">Make Admin</button>
-                            </form>
-                        <?php else: ?>
-                            —
-                        <?php endif; ?>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
+    <div class="admin-wrapper" style="display:flex; min-height:100vh;">
+        <aside class="sidebar" style="width:220px; background:#2c3e50; color:#ecf0f1; padding:1.5rem;">
+            <h2 style="margin-top:0;">Admin Panel</h2>
+            <nav>
+                <ul style="list-style:none; padding:0;">
+                    <li style="margin-bottom:0.8rem;"><a href="dashboard.php" style="color:#ecf0f1; text-decoration:none; font-weight:500;">Dashboard</a></li>
+                    <li style="margin-bottom:0.8rem;"><a href="../index.php" style="color:#ecf0f1; text-decoration:none; font-weight:500;">Home</a></li>
+                    <li><a href="../logout.php" style="color:#ecf0f1; text-decoration:none; font-weight:500;">Logout</a></li>
+                </ul>
+            </nav>
+        </aside>
+        <main class="main-content" style="flex:1; padding:2rem; background:#f4f7f9;">
+            <h1>Recent Users</h1>
+            <?php if (!empty($_SESSION['flash'])): ?>
+                <div class="flash"><?php echo htmlspecialchars($_SESSION['flash']); unset($_SESSION['flash']); ?></div>
+            <?php endif; ?>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Joined</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($users as $u): ?>
+                        <tr>
+                            <td><?php echo $u['id']; ?></td>
+                            <td><?php echo htmlspecialchars($u['name']); ?></td>
+                            <td><?php echo htmlspecialchars($u['email']); ?></td>
+                            <td><?php echo $u['role'] === 'admin' ? '<span class="admin">Admin</span>' : 'User'; ?></td>
+                            <td><?php echo $u['created_at']; ?></td>
+                            <td>
+                                <?php if ($u['role'] !== 'admin'): ?>
+                                    <form method="post" style="margin:0;">
+                                        <input type="hidden" name="promote_id" value="<?php echo $u['id']; ?>" />
+                                        <button class="btn" type="submit">Make Admin</button>
+                                    </form>
+                                <?php else: ?>
+                                    —
+                                <?php endif; ?>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </main>
+    </div>
 </body>
 </html>
