@@ -277,6 +277,13 @@ $products = JsonDB::getProducts();
                     <p class="form-text text-muted mt-1" style="font-size: 0.65rem;">Upload new images or select from the gallery below.</p>
                     <!-- Gallery selection (checkboxes) -->
                     <div class="gallery mt-2" style="display:flex; flex-wrap:wrap; gap:8px;">
+                        <style>
+                            .gallery-img-label input[type="checkbox"]:checked + img {
+                                border: 3px solid #3B82F6 !important;
+                                opacity: 0.8;
+                                padding: 0 !important;
+                            }
+                        </style>
                         <?php
                         $galleryPath = __DIR__ . '/../public/images/';
                         $files = [];
@@ -286,9 +293,10 @@ $products = JsonDB::getProducts();
                         foreach ($files as $file) {
                             if (preg_match('/\.(jpe?g|png|gif)$/i', $file)) {
                                 $fileUrl = '../public/images/' . $file;
-                                echo "<label style='cursor:pointer;'>";
-                                echo "<input type='checkbox' name='gallery_images[]' value='public/images/{$file}' style='display:none;'" . (in_array('public/images/'.$file, $editProduct['images'] ?? []) ? ' checked' : '') . " />";
-                                echo "<img src='{$fileUrl}' alt='{$file}' style='max-height:60px; border:1px solid #ccc; padding:2px;' />";
+                                $isChecked = in_array('public/images/'.$file, $editProduct['images'] ?? []) ? 'checked' : '';
+                                echo "<label class='gallery-img-label' style='cursor:pointer;'>";
+                                echo "<input type='checkbox' name='gallery_images[]' value='public/images/{$file}' style='display:none;' {$isChecked} />";
+                                echo "<img src='{$fileUrl}' alt='{$file}' style='max-height:60px; border:2px solid transparent; transition: all 0.2s;' />";
                                 echo "</label>";
                             }
                         }

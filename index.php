@@ -17,13 +17,14 @@ require_once __DIR__ . '/includes/header.php';
 <section class="position-relative bg-light flex-column justify-content-between overflow-hidden d-flex" style="min-h: 90vh;">
     <!-- Image Background Slider -->
     <?php
-    $heroImages = [
-        'public/images/amazed-young-woman-shopaholic-holding-colorful-shopping-bags-look-amused-shop-buying-thi_1258-119761.avif',
-        'public/images/depositphotos_409624328-stock-photo-young-woman-pink-hair-holding.jpg',
-        'public/images/funky-cool-asian-senior-woman-fashionable-clothes-dancing-while-going-shopping-sales-holdi_1258-162040.avif',
-        'public/images/image-happy-young-woman-carry-lots-shopping-bags-buying-things-spring-discounts-standing-blue-background_1258-300694.avif',
-        'public/images/images.jpg'
-    ];
+    $heroDataPath = __DIR__ . '/data/hero.json';
+    $heroImages = [];
+    if (file_exists($heroDataPath)) {
+        $heroImages = json_decode(file_get_contents($heroDataPath), true);
+    }
+    if (!is_array($heroImages)) {
+        $heroImages = [];
+    }
     // Filter to only those that exist
     $heroImages = array_filter($heroImages, function($img) {
         return file_exists(__DIR__ . '/' . $img);
