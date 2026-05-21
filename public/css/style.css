@@ -290,3 +290,18 @@ footer .bg-light {
 [x-cloak] {
     display: none !important;
 }
+/* Dark mode overrides for Premium Footer */
+.dark-mode footer.bg-white {
+    background-color: var(--footer-bg) !important;
+    border-color: var(--border-color) !important;
+}
+.dark-mode .bg-light.border-top {
+    background-color: var(--footer-bottom-bg) !important;
+    border-color: var(--border-color) !important;
+}
+.dark-mode footer a {
+    color: var(--text-secondary) !important;
+}
+.dark-mode footer a:hover {
+    color: var(--accent-color) !important;
+}
