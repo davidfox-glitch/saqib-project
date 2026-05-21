@@ -5,7 +5,7 @@
 
         <!-- Main footer body -->
         <div class="container pb-5" style="max-width: 1280px;">
-            <div class="row gx-5 gy-5">
+            <div class="row gx-5 gy-5 align-items-start">
                 
                 <!-- Brand & Newsletter Column -->
                 <div class="col-lg-5 col-md-12 pe-lg-5">
