@@ -136,7 +136,13 @@ require_once __DIR__ . '/includes/header.php';
         </section>
 
         <!-- Shirt Column -->
-<?php $pShirt = reset($shirts); if ($pShirt): ?>
+        <?php $pShirt = reset($shirts); if ($pShirt): ?>
+        <div class="col-md-4">
+            <div class="card border-0 rounded-0 bg-transparent space-y-3">
+                <div class="position-relative overflow-hidden bg-light ratio ratio-3x4 border border-light">
+                    <!-- Image click goes to product.php -->
+                    <a href="product.php?id=<?= $pShirt['id'] ?>">
+                        <?php if (file_exists(__DIR__ . '/' . $pShirt['image'])): ?>
                             <img src="<?= $pShirt['image'] ?>" class="w-100 h-100 object-fit-cover card-img-top rounded-0" style="object-fit: cover;" alt="<?= htmlspecialchars($pShirt['name']) ?>">
                         <?php else: ?>
                             <div class="w-100 h-100 d-flex flex-column align-items-center justify-content-center p-4 img-placeholder text-secondary text-center">

@@ -18,6 +18,8 @@ class Auth {
             return true;
         }
 
+        $user = JsonDB::findUserByEmail($email);
+        if ($user && password_verify($password, $user['password'])) {
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['user_name'] = $user['username'];
             $_SESSION['user_email'] = $user['email'];
