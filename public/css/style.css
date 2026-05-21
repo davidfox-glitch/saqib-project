@@ -265,6 +265,17 @@ footer .bg-light {
     box-shadow: none !important;
 }
 
+/* Dark mode overrides for auth cards */
+.dark-mode .bg-white.border.shadow-lg {
+    background-color: var(--card-bg) !important;
+    border-color: var(--border-color) !important;
+    color: var(--text-primary) !important;
+}
+/* Remove image borders in dark mode (if any) */
+.dark-mode img {
+    border: none !important;
+}
+
 /* Fix Hero Banner Bottom Strip Background in Dark/Light Modes */
 .position-relative.z-1.bg-white.border-top.border-light.py-3 {
     background-color: rgba(255, 255, 255, 0.7) !important;

@@ -212,18 +212,23 @@ $currentUser = Auth::getCurrentUser();
                         </svg>
                     </button>
 
-                    <!-- Light/Dark Mode Switcher -->
-                    <button class="btn btn-link p-2 border-0" 
+                    <!-- Light/Dark Mode Pill Switcher -->
+                    <button class="theme-toggle-btn" 
                             @click="darkMode = !darkMode; localStorage.setItem('darkMode', darkMode);" 
-                            aria-label="Toggle Theme">
-                        <!-- Sun Icon (shown in dark mode) -->
-                        <svg x-show="darkMode" style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24" class="text-warning" x-cloak>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 3v1m0 16v1m9-9h-1M4 9H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M14 12a2 2 0 11-4 0 2 2 0 014 0z"/>
-                        </svg>
-                        <!-- Moon Icon (shown in light mode) -->
-                        <svg x-show="!darkMode" style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
-                        </svg>
+                            :aria-label="darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'"
+                            :title="darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'">
+                        <span class="theme-toggle-track" :class="{ 'active': darkMode }">
+                            <span class="theme-toggle-thumb">
+                                <!-- Sun rays (light mode icon inside thumb) -->
+                                <svg x-show="!darkMode" style="width: 10px; height: 10px;" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm0 15a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm8.66-9a1 1 0 01-.366 1.366l-.866.5a1 1 0 11-1-1.732l.866-.5A1 1 0 0120.66 8zM5.206 15.134a1 1 0 01-.366 1.366l-.866.5a1 1 0 11-1-1.732l.866-.5a1 1 0 011.366.366zM20.66 16a1 1 0 01-1.366.366l-.866-.5a1 1 0 111-1.732l.866.5A1 1 0 0120.66 16zM5.206 8.866a1 1 0 01-1.366.366l-.866-.5a1 1 0 111-1.732l.866.5a1 1 0 01.366 1.366zM17 12a5 5 0 11-10 0 5 5 0 0110 0z"/>
+                                </svg>
+                                <!-- Moon (dark mode icon inside thumb) -->
+                                <svg x-show="darkMode" style="width: 10px; height: 10px;" fill="currentColor" viewBox="0 0 24 24" x-cloak>
+                                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+                                </svg>
+                            </span>
+                        </span>
                     </button>
 
                     <!-- Account Dropdown -->
