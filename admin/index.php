@@ -4,7 +4,36 @@ require_once __DIR__ . '/header.php';
 // Fetch all database metrics
 $orders = JsonDB::getOrders();
 $products = JsonDB::getProducts();
-$users = JsonDB::getUsers();
+
+// Calculate total unique users across JSON and SQLite databases
+$jsonUsers = JsonDB::getUsers();
+$sqlitePath = __DIR__ . '/../database.sqlite';
+$sqliteUsers = [];
+if (file_exists($sqlitePath)) {
+    try {
+        $pdo = new PDO('sqlite:' . $sqlitePath, null, null, [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+        ]);
+        $stmt = $pdo->query('SELECT email FROM users');
+        $sqliteUsers = $stmt->fetchAll();
+    } catch (Throwable $e) {
+        // Ignore fallback
+    }
+}
+
+$emailsSeen = [];
+foreach ($jsonUsers as $u) {
+    $emailsSeen[strtolower($u['email'])] = true;
+}
+$uniqueUsersCount = count($jsonUsers);
+foreach ($sqliteUsers as $u) {
+    $emailKey = strtolower($u['email']);
+    if (!isset($emailsSeen[$emailKey])) {
+        $emailsSeen[$emailKey] = true;
+        $uniqueUsersCount++;
+    }
+}
 
 // Calculate total revenue from orders
 $revenue = 0;
@@ -43,7 +72,7 @@ $recentOrders = array_slice($orders, 0, 5);
     </div>
 
     <!-- Analytics Cards Grid -->
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4 mb-5">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-5 g-4 mb-5">
         <!-- Revenue Card -->
         <div class="col">
             <div class="bg-white border rounded p-4 shadow-sm h-100">
@@ -101,27 +130,28 @@ $recentOrders = array_slice($orders, 0, 5);
                 </p>
             </div>
         </div>
-    </div>
+
         <!-- Users Card -->
         <div class="col">
-            <div class="bg-white border rounded p-4 shadow-sm h-100">
+            <div class="bg-white border rounded p-4 shadow-sm h-100 position-relative">
                 <div class="d-flex align-items-center justify-content-between text-muted mb-2">
                     <span class="fw-bold text-uppercase" style="font-size: 0.6rem; letter-spacing: 0.12em;">Users</span>
                     <svg class="admin-accent" style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
                     </svg>
                 </div>
-                <p class="fs-4 fw-bold text-dark mb-1"><?= count($users) ?></p>
+                <p class="fs-4 fw-bold text-dark mb-1"><?= $uniqueUsersCount ?></p>
                 <p class="mb-0 text-muted" style="font-size: 0.6rem; font-weight: 500; letter-spacing: 0.05em;">Registered Users</p>
-                <a href="index.php" class="stretched-link"></a>
+                <a href="/admin/dashboard.php" class="stretched-link"></a>
             </div>
         </div>
+    </div>
 
     <!-- Recent Orders Card -->
     <div class="bg-white border rounded shadow-sm p-4 p-md-5">
         <div class="d-flex align-items-center justify-content-between mb-4">
             <h3 class="serif-title mb-0" style="font-size: 1.2rem; font-weight: 300; letter-spacing: 0.05em;">Recent Orders</h3>
-            <a href="orders.php" class="fw-bold text-uppercase text-decoration-none admin-accent" style="font-size: 0.6rem; letter-spacing: 0.12em;">View All Orders</a>
+            <a href="/admin/orders.php" class="fw-bold text-uppercase text-decoration-none admin-accent" style="font-size: 0.6rem; letter-spacing: 0.12em;">View All Orders</a>
         </div>
 
         <?php if (empty($recentOrders)): ?>
@@ -154,7 +184,7 @@ $recentOrders = array_slice($orders, 0, 5);
                                     </span>
                                 </td>
                                 <td class="text-end">
-                                    <a href="orders.php?order_id=<?= $order['id'] ?>" class="fw-bold text-uppercase text-decoration-none admin-accent" style="font-size: 0.6rem; letter-spacing: 0.1em;">Manage</a>
+                                    <a href="/admin/orders.php?order_id=<?= $order['id'] ?>" class="fw-bold text-uppercase text-decoration-none admin-accent" style="font-size: 0.6rem; letter-spacing: 0.1em;">Manage</a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>

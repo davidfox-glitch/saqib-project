@@ -127,7 +127,8 @@ class JsonDB {
             "username" => $username,
             "email" => $email,
             "password" => password_hash($password, PASSWORD_DEFAULT),
-            "role" => $role
+            "role" => $role,
+            "created_at" => date('Y-m-d H:i:s')
         ];
 
         $users[] = $newUser;

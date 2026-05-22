@@ -33,7 +33,7 @@ if ($action === 'edit' && isset($_GET['delete_image'])) {
         $success = "Image removed.";
         
         // Prevent fallthrough if we only meant to delete the image
-        header("Location: products.php?action=edit&id=" . $id);
+        header("Location: /admin/products.php?action=edit&id=" . $id);
         exit;
     }
 }
@@ -176,9 +176,9 @@ $products = JsonDB::getProducts();
         </div>
         
         <?php if (empty($action)): ?>
-            <a href="products.php?action=add" class="btn btn-admin-accent px-4 py-2 fw-bold text-uppercase" style="font-size: 0.7rem; letter-spacing: 0.1em; border-radius: 2px;">ADD NEW PRODUCT</a>
+            <a href="/admin/products.php?action=add" class="btn btn-admin-accent px-4 py-2 fw-bold text-uppercase" style="font-size: 0.7rem; letter-spacing: 0.1em; border-radius: 2px;">ADD NEW PRODUCT</a>
         <?php else: ?>
-            <a href="products.php" class="btn btn-outline-secondary px-4 py-2 fw-bold text-uppercase" style="font-size: 0.7rem; letter-spacing: 0.1em; border-radius: 2px;">CANCEL & VIEW CATALOG</a>
+            <a href="/admin/products.php" class="btn btn-outline-secondary px-4 py-2 fw-bold text-uppercase" style="font-size: 0.7rem; letter-spacing: 0.1em; border-radius: 2px;">CANCEL & VIEW CATALOG</a>
         <?php endif; ?>
     </div>
 
@@ -201,7 +201,7 @@ $products = JsonDB::getProducts();
                 <?= $action === 'edit' ? 'Edit Product: #' . $editProduct['id'] : 'Create New Catalog Item' ?>
             </h3>
 
-            <form action="products.php?action=<?= $action ?><?= $action === 'edit' ? '&id=' . $editProduct['id'] : '' ?>" method="POST" enctype="multipart/form-data">
+            <form action="/admin/products.php?action=<?= $action ?><?= $action === 'edit' ? '&id=' . $editProduct['id'] : '' ?>" method="POST" enctype="multipart/form-data">
                 
                 <div class="row g-3 mb-3">
                     <!-- Product Title -->
@@ -266,8 +266,8 @@ $products = JsonDB::getProducts();
                         <div class="mb-2 d-flex flex-wrap gap-2">
                             <?php foreach ($editProduct['images'] as $idx => $img): ?>
                                 <div class="position-relative" style="width:80px; height:80px;">
-                                    <img src="../<?= htmlspecialchars($img) ?>" alt="Image" style="width:100%; height:100%; object-fit:cover;" />
-                                    <a href="products.php?action=edit&id=<?= $editProduct['id'] ?>&delete_image=<?= $idx ?>" class="position-absolute top-0 end-0 btn btn-sm btn-danger" style="padding:0 4px; line-height:1;" title="Delete">×</a>
+                                    <img src="/<?= htmlspecialchars($img) ?>" alt="Image" style="width:100%; height:100%; object-fit:cover;" />
+                                    <a href="/admin/products.php?action=edit&id=<?= $editProduct['id'] ?>&delete_image=<?= $idx ?>" class="position-absolute top-0 end-0 btn btn-sm btn-danger" style="padding:0 4px; line-height:1;" title="Delete">×</a>
                                 </div>
                             <?php endforeach; ?>
                         </div>
@@ -292,7 +292,7 @@ $products = JsonDB::getProducts();
                         }
                         foreach ($files as $file) {
                             if (preg_match('/\.(jpe?g|png|gif)$/i', $file)) {
-                                $fileUrl = '../public/images/' . $file;
+                                $fileUrl = '/public/images/' . $file;
                                 $isChecked = in_array('public/images/'.$file, $editProduct['images'] ?? []) ? 'checked' : '';
                                 echo "<label class='gallery-img-label' style='cursor:pointer;'>";
                                 echo "<input type='checkbox' name='gallery_images[]' value='public/images/{$file}' style='display:none;' {$isChecked} />";
@@ -360,7 +360,7 @@ $products = JsonDB::getProducts();
                                     <td>
                                         <div class="border overflow-hidden d-flex align-items-center justify-content-center rounded bg-light flex-shrink-0" style="width: 40px; height: 48px;">
                                             <?php if (file_exists(__DIR__ . '/../' . $p['image'])): ?>
-                                                <img src="../<?= $p['image'] ?>" class="w-100 h-100" style="object-fit: cover;" alt="Thumb">
+                                                <img src="/<?= $p['image'] ?>" class="w-100 h-100" style="object-fit: cover;" alt="Thumb">
                                             <?php else: ?>
                                                 <div class="w-100 h-100 img-placeholder-admin"></div>
                                             <?php endif; ?>
@@ -400,9 +400,9 @@ $products = JsonDB::getProducts();
                                     
                                     <!-- Controls -->
                                     <td class="text-end">
-                                        <a href="products.php?action=edit&id=<?= $p['id'] ?>" class="fw-bold text-uppercase text-decoration-none text-primary me-2" style="font-size: 0.6rem; letter-spacing: 0.08em;">Edit</a>
+                                        <a href="/admin/products.php?action=edit&id=<?= $p['id'] ?>" class="fw-bold text-uppercase text-decoration-none text-primary me-2" style="font-size: 0.6rem; letter-spacing: 0.08em;">Edit</a>
                                         <a 
-                                            href="products.php?action=delete&id=<?= $p['id'] ?>" 
+                                            href="/admin/products.php?action=delete&id=<?= $p['id'] ?>" 
                                             onclick="return confirm('Are you sure you want to delete this product?')" 
                                             class="fw-bold text-uppercase text-decoration-none text-danger"
                                             style="font-size: 0.6rem; letter-spacing: 0.08em;"

@@ -126,32 +126,39 @@ $current_page = basename($_SERVER['PHP_SELF']);
             
             <!-- Menu Links -->
             <nav class="d-flex flex-column gap-2">
-                <a href="index.php" class="sidebar-link <?= $current_page === 'index.php' ? 'active' : '' ?>">
+                <a href="/admin/index.php" class="sidebar-link <?= $current_page === 'index.php' ? 'active' : '' ?>">
                     <svg class="me-3 flex-shrink-0" style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2v-4zM14 16a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2v-4z"/>
                     </svg>
                     Dashboard
                 </a>
 
-                <a href="products.php" class="sidebar-link <?= $current_page === 'products.php' ? 'active' : '' ?>">
+                <a href="/admin/products.php" class="sidebar-link <?= $current_page === 'products.php' ? 'active' : '' ?>">
                     <svg class="me-3 flex-shrink-0" style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
                     </svg>
                     Products
                 </a>
 
-                <a href="hero.php" class="sidebar-link <?= $current_page === 'hero.php' ? 'active' : '' ?>">
+                <a href="/admin/hero.php" class="sidebar-link <?= $current_page === 'hero.php' ? 'active' : '' ?>">
                     <svg class="me-3 flex-shrink-0" style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                     </svg>
                     Hero Slider
                 </a>
 
-                <a href="orders.php" class="sidebar-link <?= $current_page === 'orders.php' ? 'active' : '' ?>">
+                <a href="/admin/orders.php" class="sidebar-link <?= $current_page === 'orders.php' ? 'active' : '' ?>">
                     <svg class="me-3 flex-shrink-0" style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
                     </svg>
                     Orders
+                </a>
+
+                <a href="/admin/dashboard.php" class="sidebar-link <?= $current_page === 'dashboard.php' ? 'active' : '' ?>">
+                    <svg class="me-3 flex-shrink-0" style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+                    </svg>
+                    Users
                 </a>
             </nav>
         </div>
@@ -169,10 +176,10 @@ $current_page = basename($_SERVER['PHP_SELF']);
             </div>
             <div class="row g-2">
                 <div class="col-6">
-                    <a href="../index.php" class="btn btn-sm w-100 text-center fw-bold text-uppercase py-2 text-secondary" style="font-size: 0.6rem; background-color: #27303f; border-radius: 4px;">Store</a>
+                    <a href="/index.php" class="btn btn-sm w-100 text-center fw-bold text-uppercase py-2 text-secondary" style="font-size: 0.6rem; background-color: #27303f; border-radius: 4px;">Store</a>
                 </div>
                 <div class="col-6">
-                    <a href="../login.php?action=logout" class="btn btn-sm w-100 text-center fw-bold text-uppercase py-2" style="font-size: 0.6rem; background-color: #450a0a; color: #f87171; border-radius: 4px;">Logout</a>
+                    <a href="/login.php?action=logout" class="btn btn-sm w-100 text-center fw-bold text-uppercase py-2" style="font-size: 0.6rem; background-color: #450a0a; color: #f87171; border-radius: 4px;">Logout</a>
                 </div>
             </div>
         </div>
@@ -185,10 +192,11 @@ $current_page = basename($_SERVER['PHP_SELF']);
         <header class="admin-sidebar text-white p-3 d-flex align-items-center justify-content-between d-md-none shadow">
             <span class="serif-title" style="font-size: 1.1rem; letter-spacing: 0.2em;">EXALTIA</span>
             <div class="d-flex align-items-center gap-2" style="font-size: 0.7rem;">
-                <a href="index.php" class="text-secondary text-decoration-none px-2 py-1">Home</a>
-                <a href="products.php" class="text-secondary text-decoration-none px-2 py-1">Products</a>
-                <a href="hero.php" class="text-secondary text-decoration-none px-2 py-1">Hero</a>
-                <a href="orders.php" class="text-secondary text-decoration-none px-2 py-1">Orders</a>
+                <a href="/admin/index.php" class="text-secondary text-decoration-none px-2 py-1">Home</a>
+                <a href="/admin/products.php" class="text-secondary text-decoration-none px-2 py-1">Products</a>
+                <a href="/admin/hero.php" class="text-secondary text-decoration-none px-2 py-1">Hero</a>
+                <a href="/admin/orders.php" class="text-secondary text-decoration-none px-2 py-1">Orders</a>
+                <a href="/admin/dashboard.php" class="text-secondary text-decoration-none px-2 py-1">Users</a>
                 <a href="../login.php?action=logout" class="text-decoration-none px-2 py-1" style="color: #f87171;">Logout</a>
             </div>
         </header>

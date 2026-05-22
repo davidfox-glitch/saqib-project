@@ -50,7 +50,7 @@ usort($orders, function($a, $b) {
         </div>
         
         <?php if ($selectedOrder): ?>
-            <a href="orders.php" class="btn btn-outline-secondary px-4 py-2 fw-bold text-uppercase" style="font-size: 0.7rem; letter-spacing: 0.1em; border-radius: 2px;">BACK TO LIST</a>
+            <a href="/admin/orders.php" class="btn btn-outline-secondary px-4 py-2 fw-bold text-uppercase" style="font-size: 0.7rem; letter-spacing: 0.1em; border-radius: 2px;">BACK TO LIST</a>
         <?php endif; ?>
     </div>
 
@@ -103,7 +103,7 @@ usort($orders, function($a, $b) {
                             <!-- Thumb -->
                             <div class="border overflow-hidden d-flex align-items-center justify-content-center rounded bg-light flex-shrink-0" style="width: 48px; height: 64px;">
                                 <?php if (file_exists(__DIR__ . '/../' . $item['image'])): ?>
-                                    <img src="../<?= $item['image'] ?>" class="w-100 h-100" style="object-fit: cover;" alt="Thumb">
+                                    <img src="/<?= $item['image'] ?>" class="w-100 h-100" style="object-fit: cover;" alt="Thumb">
                                 <?php else: ?>
                                     <div class="w-100 h-100 img-placeholder-admin"></div>
                                 <?php endif; ?>
@@ -144,7 +144,7 @@ usort($orders, function($a, $b) {
                     </div>
 
                     <!-- Change status form -->
-                    <form action="orders.php?order_id=<?= $selectedOrder['id'] ?>" method="POST" class="pt-3 border-top">
+                    <form action="/admin/orders.php?order_id=<?= $selectedOrder['id'] ?>" method="POST" class="pt-3 border-top">
                         <input type="hidden" name="order_id" value="<?= $selectedOrder['id'] ?>">
                         <div class="mb-3">
                             <label class="form-label fw-bold text-uppercase text-muted" style="font-size: 0.6rem; letter-spacing: 0.12em;">Update Status</label>
@@ -200,7 +200,7 @@ usort($orders, function($a, $b) {
                                         </span>
                                     </td>
                                     <td class="text-end">
-                                        <a href="orders.php?order_id=<?= $order['id'] ?>" class="fw-bold text-uppercase text-decoration-none admin-accent" style="font-size: 0.6rem; letter-spacing: 0.1em;">Manage Details</a>
+                                        <a href="/admin/orders.php?order_id=<?= $order['id'] ?>" class="fw-bold text-uppercase text-decoration-none admin-accent" style="font-size: 0.6rem; letter-spacing: 0.1em;">Manage Details</a>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>

@@ -25,7 +25,7 @@ if (isset($_GET['delete_img'])) {
         return $h !== $imgToDelete;
     }));
     file_put_contents($heroDataPath, json_encode($currentHero, JSON_PRETTY_PRINT));
-    header("Location: hero.php?msg=deleted");
+    header("Location: /admin/hero.php?msg=deleted");
     exit;
 }
 
@@ -137,7 +137,7 @@ require_once __DIR__ . '/header.php';
 </div>
 
 <div class="bg-white border rounded shadow-sm p-4 p-md-5">
-    <form action="hero.php" method="POST" enctype="multipart/form-data" id="heroForm">
+    <form action="/admin/hero.php" method="POST" enctype="multipart/form-data" id="heroForm">
         
         <div class="mb-5">
             <label class="form-label fw-bold text-uppercase text-muted" style="font-size: 0.7rem; letter-spacing: 0.12em;">Upload New Hero Images</label>
@@ -179,11 +179,11 @@ require_once __DIR__ . '/header.php';
                         
                         <!-- Image -->
                         <div class="ratio ratio-16x9">
-                            <img src="../<?= htmlspecialchars($fileRelPath) ?>" alt="<?= htmlspecialchars($file) ?>" style="object-fit: cover; width:100%; height:100%;">
+                            <img src="/<?= htmlspecialchars($fileRelPath) ?>" alt="<?= htmlspecialchars($file) ?>" style="object-fit: cover; width:100%; height:100%;">
                         </div>
                         
                         <!-- Delete button -->
-                        <a href="hero.php?delete_img=<?= urlencode($fileRelPath) ?>" 
+                        <a href="/admin/hero.php?delete_img=<?= urlencode($fileRelPath) ?>" 
                            class="delete-btn" 
                            onclick="event.stopPropagation(); return confirm('Delete this image from library?');"
                            title="Delete image">
